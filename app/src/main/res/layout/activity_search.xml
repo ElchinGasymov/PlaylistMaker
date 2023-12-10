@@ -21,10 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="8dp"
-        app:cardCornerRadius="8dp"
-
-        >
+        android:layout_marginVertical="@dimen/icon_padding"
+        app:cardCornerRadius="@dimen/icon_padding">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,8 +42,8 @@
                 android:hint="@string/search_button"
                 android:inputType="text"
                 android:maxLines="1"
-                android:paddingVertical="8.5dp"
-                android:paddingStart="12dp"
+                android:paddingVertical="@dimen/icon_padding"
+                android:paddingStart="@dimen/_12dp"
                 android:textColorHint="?attr/colorOnPrimary">
 
 
@@ -58,8 +56,8 @@
                 android:layout_gravity="center_vertical|end"
                 android:background="@color/YP_Light_Gray"
                 android:drawableTint="@color/YP_Text_Gray"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="12.5dp"
+                android:paddingHorizontal="@dimen/_12dp"
+                android:paddingVertical="@dimen/_12dp"
                 android:src="@drawable/clear_icon"
                 android:visibility="gone" />
 
