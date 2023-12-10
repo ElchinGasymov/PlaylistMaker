@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="YP_White" format="color" />
+    <attr name="YP_Blue" format="color" />
+    <attr name="YP_Black" format="color" />
+    <attr name="YP_Text_Gray" format="color" />
+    <attr name="YP_Light_Gray" format="color" />
+    <attr name="YP_Background" format="color" />
+    <attr name="YP_Red" format="color" />
+    <attr name="YP_Blue_Light" format="color" />
+</resources>

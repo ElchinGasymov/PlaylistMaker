@@ -1,7 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.PlaylistMaker.Dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">?YP_Black</item>
+        <item name="colorSecondary">?YP_White</item>
+        <item name="colorButtonNormal">?YP_Blue</item>
+        <item name="colorAccent">?YP_Text_Gray</item>
+        <item name="colorOnBackground">?YP_Black</item>
+        <item name="colorContainer">?YP_White</item>
+        <item name="colorOnPrimary">?YP_Black</item>
+        <item name="colorSurfaceVariant">?YP_Blue</item>
+        <item name="colorSurface">?YP_Blue_Light</item>
+        <!-- DS colors -->
+        <item name="YP_White">@color/YP_White</item>
+        <item name="YP_Blue">@color/YP_Blue</item>
+        <item name="YP_Black">@color/YP_Black</item>
+        <item name="YP_Text_Gray">@color/YP_Text_Gray</item>
+        <item name="YP_Light_Gray">@color/YP_Light_Gray</item>
+        <item name="YP_Background">@color/YP_Background</item>
+        <item name="YP_Red">@color/YP_Red</item>
+        <item name="YP_Blue_Light">@color/YP_Blue_Light</item>
     </style>
 </resources>
