@@ -13,7 +13,7 @@ import com.google.android.material.appbar.MaterialToolbar
 
 class SearchActivity : AppCompatActivity() {
 
-    private lateinit var inputEditText: EditText
+    private var inputText: String = ""
     private val SEARCH_QUERY_KEY = "searchQuery"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,8 +25,7 @@ class SearchActivity : AppCompatActivity() {
         val toolbar = findViewById<MaterialToolbar>(R.id.searchToolbar)
 
         if (savedInstanceState != null) {
-            val savedSearchQuery = savedInstanceState.getString(SEARCH_QUERY_KEY)
-            inputEditText.setText(savedSearchQuery)
+            inputEditText.setText(inputText)
         }
 
         val simpleTextWatcher = object : TextWatcher {
@@ -36,7 +35,9 @@ class SearchActivity : AppCompatActivity() {
                 clearButton.isVisible = !s.isNullOrEmpty()
             }
 
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(s: Editable) {
+                inputText = s.toString()
+            }
 
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
@@ -59,13 +60,13 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_QUERY_KEY, inputEditText.text.toString())
+        outState.putString(SEARCH_QUERY_KEY, inputText)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        val savedSearchQuery = savedInstanceState.getString(SEARCH_QUERY_KEY)
-        inputEditText.setText(savedSearchQuery)
+        val savedSearchQuery = savedInstanceState.getString(SEARCH_QUERY_KEY)?: ""
+        inputText = savedSearchQuery
     }
 
 }
