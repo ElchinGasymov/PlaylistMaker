@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".SettingsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,77 +17,62 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:backgroundTint="@color/white"
-            android:padding="12dp"
+            android:background="?attr/colorPrimary"
+            android:contentDescription="@string/back_button"
+            android:padding="@dimen/_12dp"
             android:src="@drawable/arrow_back_icon"
-            app:iconTint="@color/black"
-            android:contentDescription="@string/back_button" />
+            app:iconTint="?attr/colorSecondary"
+            app:tint="?attr/colorSecondary" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="@dimen/_12dp"
+            android:fontFamily="@font/ys_display_medium"
             android:paddingTop="10dp"
             android:paddingBottom="12dp"
             android:text="@string/settings"
-            android:textColor="@color/YP_black"
-            android:textSize="22sp"
-
-            />
+            android:textColor="?attr/colorSecondary"
+            android:textSize="22sp" />
     </LinearLayout>
 
     <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/darkThemeSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_display_regular"
         android:paddingVertical="21dp"
         android:paddingStart="16dp"
         android:paddingEnd="4dp"
         android:text="@string/dark_theme"
-        android:textSize="16sp">
+        android:textSize="16sp"
+        app:thumbTint="?attr/colorSurfaceVariant"
+        app:trackTint="?attr/colorSurface">
 
     </androidx.appcompat.widget.SwitchCompat>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingTop="19dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="18dp"
+        android:id="@+id/shareApp"
+        style="@style/SettingsScreenLine"
         android:text="@string/share_app"
-        android:textColor="@color/black"
-        android:textSize="16sp"
         app:drawableRightCompat="@drawable/share_icon"
-        app:iconTint="@color/YP_text_gray" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingTop="19dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="18dp"
-        android:text="@string/support"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:drawableRightCompat="@drawable/support_icon"
-        app:iconTint="@color/YP_text_gray"
 
         />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingTop="19dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="18dp"
+        android:id="@+id/writeToSupport"
+        style="@style/SettingsScreenLine"
+        android:text="@string/support"
+        app:drawableRightCompat="@drawable/support_icon"
+
+        />
+
+    <TextView
+        android:id="@+id/termsOfUse"
+        style="@style/SettingsScreenLine"
         android:text="@string/terms_of_use"
-        android:textColor="@color/black"
-        android:textSize="16sp"
         app:drawableRightCompat="@drawable/arrow_right"
-        app:iconTint="@color/YP_text_gray"
 
         />
 

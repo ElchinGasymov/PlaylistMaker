@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MainScreenButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_marginHorizontal">@dimen/margin_horizontal</item>
+        <item name="android:layout_weight">1</item>
+        <item name="backgroundTint">?attr/YP_White</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">?attr/YP_Black</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="cornerRadius">@dimen/corner_radius</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/icon_padding</item>
+        <item name="iconTint">?attr/YP_Black</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="SettingsScreenLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingTop">19dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingBottom">18dp</item>
+        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="iconTint">?attr/YP_Text_Gray</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="SearchView" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:hint">"@string/search_button"</item>
+        <item name="startIconDrawable">"@drawable/search_icon"</item>
+        <item name="android:layout_marginVertical">8dp</item>
+        <item name="marginHorizontal">16dp</item>
+        <item name="boxCornerRadiusTopStart">@dimen/icon_padding</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/icon_padding</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/icon_padding</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/icon_padding</item>
+        <item name="backgroundTint">@color/YP_Text_Gray</item>
+    </style>
+</resources>
