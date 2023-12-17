@@ -11,6 +11,7 @@
         <item name="colorOnPrimary">?YP_Text_Gray</item>
         <item name="colorSurfaceVariant">?YP_Text_Gray</item>
         <item name="colorSurface">?YP_Light_Gray</item>
+        <item name="colorBackgroundFloating">?YP_Text_Gray</item>
         <!-- DS colors -->
         <item name="YP_White">@color/YP_White</item>
         <item name="YP_Blue">@color/YP_Blue</item>

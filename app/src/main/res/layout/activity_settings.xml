@@ -56,24 +56,18 @@
         android:id="@+id/shareApp"
         style="@style/SettingsScreenLine"
         android:text="@string/share_app"
-        app:drawableRightCompat="@drawable/share_icon"
-
-        />
+        app:drawableRightCompat="@drawable/share_icon" />
 
     <TextView
         android:id="@+id/writeToSupport"
         style="@style/SettingsScreenLine"
         android:text="@string/support"
-        app:drawableRightCompat="@drawable/support_icon"
-
-        />
+        app:drawableRightCompat="@drawable/support_icon" />
 
     <TextView
         android:id="@+id/termsOfUse"
         style="@style/SettingsScreenLine"
         android:text="@string/terms_of_use"
-        app:drawableRightCompat="@drawable/arrow_right"
-
-        />
+        app:drawableRightCompat="@drawable/arrow_right" />
 
 </LinearLayout>

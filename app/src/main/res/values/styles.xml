@@ -41,4 +41,11 @@
         <item name="boxCornerRadiusBottomEnd">@dimen/icon_padding</item>
         <item name="backgroundTint">@color/YP_Text_Gray</item>
     </style>
+
+    <style name="RecyclerTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
 </resources>

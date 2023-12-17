@@ -21,9 +21,7 @@
             android:paddingEnd="62dp"
             android:text="@string/app_name"
             android:textColor="?attr/YP_White"
-            android:textSize="26sp">
-
-        </TextView>
+            android:textSize="26sp" />
 
     </FrameLayout>
 

@@ -44,10 +44,7 @@
                 android:maxLines="1"
                 android:paddingVertical="@dimen/icon_padding"
                 android:paddingStart="@dimen/_12dp"
-                android:textColorHint="?attr/colorOnPrimary">
-
-
-            </EditText>
+                android:textColorHint="?attr/colorOnPrimary" />
 
             <ImageView
                 android:id="@+id/clearButton"
@@ -63,5 +60,12 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trackRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </LinearLayout>
