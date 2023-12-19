@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp">
+        android:layout_margin="@dimen/_4dp">
 
         <ImageButton
             android:id="@+id/settings_back_button"
@@ -20,9 +20,7 @@
             android:background="?attr/colorPrimary"
             android:contentDescription="@string/back_button"
             android:padding="@dimen/_12dp"
-            android:src="@drawable/arrow_back_icon"
-            app:iconTint="?attr/colorSecondary"
-            app:tint="?attr/colorSecondary" />
+            android:src="@drawable/ic_arrow_back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,11 +28,11 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/_12dp"
             android:fontFamily="@font/ys_display_medium"
-            android:paddingTop="10dp"
-            android:paddingBottom="12dp"
+            android:paddingTop="@dimen/_10dp"
+            android:paddingBottom="@dimen/_12dp"
             android:text="@string/settings"
             android:textColor="?attr/colorSecondary"
-            android:textSize="22sp" />
+            android:textSize="@dimen/_22sp" />
     </LinearLayout>
 
     <androidx.appcompat.widget.SwitchCompat
@@ -42,32 +40,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_regular"
-        android:paddingVertical="21dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="4dp"
+        android:paddingVertical="@dimen/_12dp"
+        android:paddingStart="@dimen/_16dp"
+        android:paddingEnd="@dimen/_4dp"
         android:text="@string/dark_theme"
-        android:textSize="16sp"
+        android:textSize="@dimen/_16sp"
         app:thumbTint="?attr/colorSurfaceVariant"
-        app:trackTint="?attr/colorSurface">
-
-    </androidx.appcompat.widget.SwitchCompat>
+        app:trackTint="?attr/colorSurface" />
 
     <TextView
         android:id="@+id/shareApp"
         style="@style/SettingsScreenLine"
         android:text="@string/share_app"
-        app:drawableRightCompat="@drawable/share_icon" />
+        app:drawableRightCompat="@drawable/ic_share" />
 
     <TextView
         android:id="@+id/writeToSupport"
         style="@style/SettingsScreenLine"
         android:text="@string/support"
-        app:drawableRightCompat="@drawable/support_icon" />
+        app:drawableRightCompat="@drawable/ic_support" />
 
     <TextView
         android:id="@+id/termsOfUse"
         style="@style/SettingsScreenLine"
         android:text="@string/terms_of_use"
-        app:drawableRightCompat="@drawable/arrow_right" />
+        app:drawableRightCompat="@drawable/ic_arrow_right" />
 
 </LinearLayout>

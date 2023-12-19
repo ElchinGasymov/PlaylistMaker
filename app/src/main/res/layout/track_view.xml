@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/icon_padding"
-        android:paddingStart="13dp" />
+        android:paddingStart="@dimen/_13dp" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -22,9 +22,8 @@
         <TextView
             android:id="@+id/trackName"
             style="@style/RecyclerTextView"
-            android:paddingTop="14dp"
-            android:paddingBottom="1dp"
-            android:text="kfgkfbhjk"
+            android:paddingTop="@dimen/_14dp"
+            android:paddingBottom="@dimen/_1dp"
             android:textColor="?attr/colorSecondary" />
 
         <LinearLayout
@@ -35,16 +34,16 @@
             <TextView
                 android:id="@+id/artistName"
                 style="@style/RecyclerTextView"
-                android:text="The Beatles"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:maxLines="1"
                 android:textColor="?attr/colorBackgroundFloating" />
 
             <TextView
                 android:id="@+id/trackTime"
                 style="@style/RecyclerTextView"
-                android:text="5.12"
                 android:textColor="?attr/colorBackgroundFloating"
-                app:drawableStartCompat="@drawable/separator_icon"
-                app:drawableTint="?attr/colorBackgroundFloating" />
+                app:drawableStartCompat="@drawable/ic_separator" />
 
         </LinearLayout>
 
@@ -58,7 +57,6 @@
         android:paddingTop="@dimen/_18dp"
         android:paddingEnd="@dimen/_12dp"
         android:paddingBottom="@dimen/_19dp"
-        android:src="@drawable/arrow_right"
-        app:tint="?attr/colorBackgroundFloating" />
+        android:src="@drawable/ic_arrow_right" />
 
 </LinearLayout>

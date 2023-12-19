@@ -16,6 +16,10 @@ import com.google.android.material.appbar.MaterialToolbar
 
 class SearchActivity : AppCompatActivity() {
 
+    companion object {
+        private const val EMPTY = ""
+    }
+
     private var inputText: String = ""
     private val SEARCH_QUERY_KEY = "searchQuery"
 
@@ -105,7 +109,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        val savedSearchQuery = savedInstanceState.getString(SEARCH_QUERY_KEY) ?: ""
+        val savedSearchQuery = savedInstanceState.getString(SEARCH_QUERY_KEY) ?: EMPTY
         inputText = savedSearchQuery
     }
 

@@ -18,14 +18,17 @@ class TracksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val imageView: ImageView = itemView.findViewById(R.id.trackImage)
 
     fun bind(model: Track) {
+
+        val roundedCornersRadius = itemView.context.resources.getInteger(R.integer.glide_corner_radius)
+
         trackName.text = model.trackName
         artistName.text = model.artistName
         trackTime.text = model.trackTime
         Glide.with(itemView)
             .load(model.artworkUrl100)
-            .placeholder(R.drawable.placeholder_icon)
+            .placeholder(R.drawable.ic_placeholder)
             .fitCenter()
-            .transform(RoundedCorners(2))
+            .transform(RoundedCorners(roundedCornersRadius))
             .into(imageView)
     }
 
