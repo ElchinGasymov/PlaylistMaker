@@ -13,4 +13,7 @@
     <string name="mail_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="my_email">elchin.gasimov971@yandex.ru</string>
     <string name="email_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="nothing_to_show">Ничего не нашлось</string>
+    <string name="network_problems">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="update">Обновить</string>
 </resources>
