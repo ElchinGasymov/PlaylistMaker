@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -47,6 +45,9 @@ class SearchActivity : AppCompatActivity() {
     private var inputText: String = ""
     private val SEARCH_QUERY_KEY = "searchQuery"
 
+    val trackList: MutableList<Track> = mutableListOf()
+    val tracksAdapter = TracksAdapter(trackList)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -59,9 +60,6 @@ class SearchActivity : AppCompatActivity() {
         val networkProblemsView = findViewById<LinearLayout>(R.id.network_problems)
         val updateButton = findViewById<TextView>(R.id.update)
 
-        val trackList: MutableList<Track> = mutableListOf()
-
-        val tracksAdapter = TracksAdapter(trackList)
         recyclerView.adapter = tracksAdapter
 
         if (savedInstanceState != null) {
@@ -82,49 +80,6 @@ class SearchActivity : AppCompatActivity() {
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
-        fun hideKeyboard() {
-            val view: View? = this.currentFocus
-            if (view != null) {
-                val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-            }
-        }
-
-        fun searchSongs(query: String, recyclerView: RecyclerView, nothingToShowView: View, networkProblemsView: View) {
-            service.getSongs(query).enqueue(object : Callback<SongsResponse> {
-                override fun onResponse(call: Call<SongsResponse>, response: Response<SongsResponse>) {
-                    if (response.code() == 200) {
-                        trackList.clear()
-                        if (response.body()?.songs?.isNotEmpty() == true) {
-                            trackList.addAll(response.body()?.songs!!.map {
-                                songConverter.mapToUiModels(it)
-                            })
-                            tracksAdapter.notifyDataSetChanged()
-                        }
-                        if (trackList.isEmpty()) {
-                            recyclerView.visibility = GONE
-                            nothingToShowView.visibility = VISIBLE
-                            networkProblemsView.visibility = GONE
-                        } else {
-                            recyclerView.visibility = VISIBLE
-                            nothingToShowView.visibility = GONE
-                            networkProblemsView.visibility = GONE
-                        }
-                    } else {
-                        recyclerView.visibility = GONE
-                        nothingToShowView.visibility = GONE
-                        networkProblemsView.visibility = VISIBLE
-                    }
-                }
-
-                override fun onFailure(call: Call<SongsResponse>, t: Throwable) {
-                    recyclerView.visibility = GONE
-                    nothingToShowView.visibility = GONE
-                    networkProblemsView.visibility = VISIBLE
-                }
-            })
-        }
-
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchSongs(inputEditText.text.toString(), recyclerView, nothingToShowView, networkProblemsView)
@@ -142,9 +97,9 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener {
             inputEditText.setText("")
             hideKeyboard()
-            recyclerView.visibility = GONE
-            nothingToShowView.visibility = GONE
-            networkProblemsView.visibility = GONE
+            recyclerView.isVisible = false
+            nothingToShowView.isVisible = false
+            networkProblemsView.isVisible = false
         }
 
         toolbar.setNavigationOnClickListener {
@@ -163,5 +118,55 @@ class SearchActivity : AppCompatActivity() {
         val savedSearchQuery = savedInstanceState.getString(SEARCH_QUERY_KEY) ?: EMPTY
         inputText = savedSearchQuery
     }
+
+    private fun hideKeyboard() {
+        val view: View? = this.currentFocus
+        if (view != null) {
+            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
+
+    private fun searchSongs(
+        query: String,
+        recyclerView: RecyclerView,
+        nothingToShowView: View,
+        networkProblemsView: View,
+    ) {
+        service.getSongs(query).enqueue(object : Callback<SongsResponse> {
+            override fun onResponse(call: Call<SongsResponse>, response: Response<SongsResponse>) {
+                if (response.code() == 200) {
+                    trackList.clear()
+                    if (response.body()?.songs?.isNotEmpty() == true) {
+                        trackList.addAll(response.body()?.songs!!.map {
+                            songConverter.mapToUiModels(it)
+                        })
+                        tracksAdapter.notifyDataSetChanged()
+                    }
+                    if (trackList.isEmpty()) {
+                        recyclerView.isVisible = false
+                        nothingToShowView.isVisible = true
+                        networkProblemsView.isVisible = false
+                    } else {
+                        recyclerView.isVisible = true
+                        nothingToShowView.isVisible = false
+                        networkProblemsView.isVisible = false
+                    }
+                } else {
+                    recyclerView.isVisible = false
+                    nothingToShowView.isVisible = false
+                    networkProblemsView.isVisible = true
+                }
+            }
+
+            override fun onFailure(call: Call<SongsResponse>, t: Throwable) {
+                recyclerView.isVisible = false
+                nothingToShowView.isVisible = false
+                networkProblemsView.isVisible = true
+            }
+        })
+    }
+
+
 
 }
