@@ -28,6 +28,14 @@ import retrofit2.create
 
 class SearchActivity : AppCompatActivity() {
 
+    private val inputEditText: EditText by lazy { findViewById(R.id.searchInputTextField) }
+    private val clearButton: ImageView by lazy { findViewById(R.id.clearButton) }
+    private val toolbar: MaterialToolbar by lazy { findViewById(R.id.searchToolbar) }
+    private val recyclerView: RecyclerView by lazy { findViewById(R.id.trackRecyclerView) }
+    private val nothingToShowView: LinearLayout by lazy { findViewById(R.id.nothing_to_show) }
+    private val networkProblemsView: LinearLayout by lazy { findViewById(R.id.network_problems) }
+    private val updateButton: TextView by lazy { findViewById(R.id.update) }
+
     private val baseUrl = "https://itunes.apple.com"
 
     private val service = Retrofit.Builder()
@@ -52,14 +60,6 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val inputEditText = findViewById<EditText>(R.id.searchInputTextField)
-        val clearButton = findViewById<ImageView>(R.id.clearButton)
-        val toolbar = findViewById<MaterialToolbar>(R.id.searchToolbar)
-        val recyclerView = findViewById<RecyclerView>(R.id.trackRecyclerView)
-        val nothingToShowView = findViewById<LinearLayout>(R.id.nothing_to_show)
-        val networkProblemsView = findViewById<LinearLayout>(R.id.network_problems)
-        val updateButton = findViewById<TextView>(R.id.update)
-
         recyclerView.adapter = tracksAdapter
 
         if (savedInstanceState != null) {
@@ -82,7 +82,7 @@ class SearchActivity : AppCompatActivity() {
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchSongs(inputEditText.text.toString(), recyclerView, nothingToShowView, networkProblemsView)
+                searchSongs(inputEditText.text.toString())
                 hideKeyboard()
                 return@setOnEditorActionListener true
             }
@@ -90,7 +90,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         updateButton.setOnClickListener {
-            searchSongs(inputEditText.text.toString(), recyclerView, nothingToShowView, networkProblemsView)
+            searchSongs(inputEditText.text.toString())
             hideKeyboard()
         }
 
@@ -127,12 +127,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun searchSongs(
-        query: String,
-        recyclerView: RecyclerView,
-        nothingToShowView: View,
-        networkProblemsView: View,
-    ) {
+    private fun searchSongs(query: String) {
         service.getSongs(query).enqueue(object : Callback<SongsResponse> {
             override fun onResponse(call: Call<SongsResponse>, response: Response<SongsResponse>) {
                 if (response.code() == 200) {
@@ -144,29 +139,31 @@ class SearchActivity : AppCompatActivity() {
                         tracksAdapter.notifyDataSetChanged()
                     }
                     if (trackList.isEmpty()) {
-                        recyclerView.isVisible = false
-                        nothingToShowView.isVisible = true
-                        networkProblemsView.isVisible = false
+                        setUiByDataState(DataState.Empty)
                     } else {
-                        recyclerView.isVisible = true
-                        nothingToShowView.isVisible = false
-                        networkProblemsView.isVisible = false
+                        setUiByDataState(DataState.Data)
                     }
                 } else {
-                    recyclerView.isVisible = false
-                    nothingToShowView.isVisible = false
-                    networkProblemsView.isVisible = true
+                    setUiByDataState(DataState.Error)
                 }
             }
 
             override fun onFailure(call: Call<SongsResponse>, t: Throwable) {
-                recyclerView.isVisible = false
-                nothingToShowView.isVisible = false
-                networkProblemsView.isVisible = true
+                setUiByDataState(DataState.Error)
             }
         })
     }
 
+    enum class DataState {
+        Data,
+        Empty,
+        Error
+    }
 
+    private fun setUiByDataState(dataState: DataState) {
+        recyclerView.isVisible = dataState == DataState.Data
+        nothingToShowView.isVisible = dataState == DataState.Empty
+        networkProblemsView.isVisible = dataState == DataState.Error
+    }
 
 }
