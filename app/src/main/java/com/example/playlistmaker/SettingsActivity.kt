@@ -3,10 +3,8 @@ package com.example.playlistmaker
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.switchmaterial.SwitchMaterial
+import com.example.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -17,23 +15,20 @@ class SettingsActivity : AppCompatActivity() {
         getSharedPreferences(PREFERENCES, MODE_PRIVATE)
     }
 
+    private lateinit var binding: ActivitySettingsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val backButton = findViewById<ImageButton>(R.id.settings_back_button)
-        val shareAppButton = findViewById<TextView>(R.id.shareApp)
-        val writeToSupportButton = findViewById<TextView>(R.id.writeToSupport)
-        val termsOfUseButton = findViewById<TextView>(R.id.termsOfUse)
-        val themeSwitcher = findViewById<SwitchMaterial>(R.id.appThemeSwitch)
+        binding.appThemeSwitch.isChecked = sharedPrefs.getBoolean(APP_THEME_KEY, false)
 
-        themeSwitcher.isChecked = sharedPrefs.getBoolean(APP_THEME_KEY, false)
-
-        backButton.setOnClickListener {
+        binding.settingsBackBtn.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        shareAppButton.setOnClickListener {
+        binding.shareAppBtn.setOnClickListener {
             val shareAppButtonIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.android_developer_link))
@@ -44,7 +39,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(shareIntent)
         }
 
-        writeToSupportButton.setOnClickListener {
+        binding.writeToSupportBtn.setOnClickListener {
             val writeToSupportIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SENDTO
                 data = Uri.parse("mailto:")
@@ -55,7 +50,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(writeToSupportIntent)
         }
 
-        termsOfUseButton.setOnClickListener {
+        binding.termsOfUseBtn.setOnClickListener {
             val termsOfUseIntent: Intent = Intent().apply {
                 action = Intent.ACTION_VIEW
                 data = Uri.parse(getString(R.string.terms_of_use_url))
@@ -63,7 +58,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(termsOfUseIntent)
         }
 
-        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+        binding.appThemeSwitch.setOnCheckedChangeListener { switcher, checked ->
             (applicationContext as App).switchTheme(checked)
             sharedPrefs.edit().putBoolean(APP_THEME_KEY, checked).apply()
         }

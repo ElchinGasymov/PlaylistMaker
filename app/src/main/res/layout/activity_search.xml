@@ -29,7 +29,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/searchInputTextField"
+                android:id="@+id/searchSongEt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -49,7 +49,7 @@
                 android:textColorHint="?attr/colorOnPrimary" />
 
             <ImageView
-                android:id="@+id/clearButton"
+                android:id="@+id/clearSearchBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
@@ -65,7 +65,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trackRecyclerView"
+        android:id="@+id/trackRv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_horizontal"
@@ -78,7 +78,7 @@
         android:fillViewport="true">
 
         <LinearLayout
-            android:id="@+id/trackSearchHistory"
+            android:id="@+id/trackSearchHistoryLl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_24dp"
@@ -95,14 +95,14 @@
                 android:textSize="@dimen/_19sp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/trackHistoryRecyclerView"
+                android:id="@+id/trackHistoryRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_18dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/clear_history"
+                android:id="@+id/clearHistoryBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -118,7 +118,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
-        android:id="@+id/nothing_to_show"
+        android:id="@+id/nothingToShowLl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_154dp"
@@ -143,7 +143,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/network_problems"
+        android:id="@+id/networkProblemsLl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -165,7 +165,7 @@
             android:textSize="@dimen/_19sp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/update"
+            android:id="@+id/tryAgainBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

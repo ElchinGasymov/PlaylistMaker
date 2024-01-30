@@ -5,22 +5,16 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.adapter.TracksAdapter
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.model.Track
 import com.example.playlistmaker.network.SongsApiService
 import com.example.playlistmaker.network.SongsResponse
 import com.example.playlistmaker.ui.converter.SongConverter
-import com.google.android.material.appbar.MaterialToolbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,18 +30,7 @@ class SearchActivity : AppCompatActivity() {
         private const val SEARCH_QUERY_KEY = "searchQuery"
     }
 
-    private val inputEditText: EditText by lazy { findViewById(R.id.searchInputTextField) }
-    private val clearButton: ImageView by lazy { findViewById(R.id.clearButton) }
-    private val toolbar: MaterialToolbar by lazy { findViewById(R.id.searchToolbar) }
-    private val trackRecycler: RecyclerView by lazy { findViewById(R.id.trackRecyclerView) }
-    private val nothingToShowView: LinearLayout by lazy { findViewById(R.id.nothing_to_show) }
-    private val networkProblemsView: LinearLayout by lazy { findViewById(R.id.network_problems) }
-    private val updateButton: TextView by lazy { findViewById(R.id.update) }
-    private val historyRecycler: RecyclerView by lazy { findViewById(R.id.trackHistoryRecyclerView) }
-    private val trackHistoryView: LinearLayout by lazy { findViewById(R.id.trackSearchHistory) }
-    private val clearHistoryButton: TextView by lazy { findViewById(R.id.clear_history) }
-
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: ActivitySearchBinding //объявление вью биндинга
 
     private lateinit var sharedPrefs: SharedPreferences
     private lateinit var searchHistory: SearchHistory
@@ -74,62 +57,62 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //setContentView(R.layout.activity_search)
 
         sharedPrefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
         searchHistory = SearchHistory(sharedPrefs)
         historyAdapter = TracksAdapter(searchHistory.getSongsFromHistory().toMutableList()) {}
 
-        trackRecycler.adapter = tracksAdapter
-        historyRecycler.adapter = historyAdapter
+        binding.trackRv.adapter = tracksAdapter
+        binding.trackHistoryRv.adapter = historyAdapter
 
         if (savedInstanceState != null) {
-            inputEditText.setText(inputText)
+            binding.searchSongEt.setText(inputText)
         }
 
-        inputEditText.doOnTextChanged{text, start, before, count ->
-            clearButton.isVisible = !text.isNullOrEmpty()
-            trackHistoryView.isVisible =
-                inputEditText.hasFocus() && text?.isEmpty() == true && searchHistory.getSongsFromHistory().isNotEmpty()
+        binding.searchSongEt.doOnTextChanged { text, start, before, count ->
+            binding.clearSearchBtn.isVisible = !text.isNullOrEmpty()
+            binding.trackSearchHistoryLl.isVisible =
+                binding.searchSongEt.hasFocus() && text?.isEmpty() == true && searchHistory.getSongsFromHistory()
+                    .isNotEmpty()
         }
 
-        inputEditText.setOnEditorActionListener { _, actionId, _ ->
+        binding.searchSongEt.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchSongs(inputEditText.text.toString())
+                searchSongs(binding.searchSongEt.text.toString())
                 hideKeyboard()
                 return@setOnEditorActionListener true
             }
             false
         }
 
-        updateButton.setOnClickListener {
-            searchSongs(inputEditText.text.toString())
+        binding.tryAgainBtn.setOnClickListener {
+            searchSongs(binding.searchSongEt.text.toString())
             hideKeyboard()
         }
 
-        clearButton.setOnClickListener {
-            inputEditText.setText("")
+        binding.clearSearchBtn.setOnClickListener {
+            binding.searchSongEt.setText("")
             hideKeyboard()
-            trackRecycler.isVisible = false
-            nothingToShowView.isVisible = false
-            networkProblemsView.isVisible = false
+            binding.trackRv.isVisible = false
+            binding.nothingToShowLl.isVisible = false
+            binding.networkProblemsLl.isVisible = false
             historyAdapter.setData(searchHistory.getSongsFromHistory())
         }
 
-        toolbar.setNavigationOnClickListener {
+        binding.searchToolbar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        inputEditText.setOnFocusChangeListener { _, hasFocus ->
-            trackHistoryView.visibility =
-                if (hasFocus && inputEditText.text.isEmpty() && searchHistory.getSongsFromHistory().isNotEmpty())
+        binding.searchSongEt.setOnFocusChangeListener { _, hasFocus ->
+            binding.trackSearchHistoryLl.visibility =
+                if (hasFocus && binding.searchSongEt.text.isEmpty() && searchHistory.getSongsFromHistory().isNotEmpty())
                     View.VISIBLE else View.GONE
         }
 
-        clearHistoryButton.setOnClickListener {
+        binding.clearHistoryBtn.setOnClickListener {
             searchHistory.clearSongsHistory()
             historyAdapter.setData(searchHistory.getSongsFromHistory())
-            trackHistoryView.isVisible = false
+            binding.trackSearchHistoryLl.isVisible = false
         }
 
     } //конец onCreate!
@@ -187,9 +170,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun setUiByDataState(dataState: DataState) {
-        trackRecycler.isVisible = dataState == DataState.Data
-        nothingToShowView.isVisible = dataState == DataState.Empty
-        networkProblemsView.isVisible = dataState == DataState.Error
+        binding.trackRv.isVisible = dataState == DataState.Data
+        binding.nothingToShowLl.isVisible = dataState == DataState.Empty
+        binding.networkProblemsLl.isVisible = dataState == DataState.Error
     }
 
     private fun onTrackClicked(clickedTrack: Track) {
