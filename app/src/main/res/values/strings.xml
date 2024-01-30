@@ -18,4 +18,5 @@
     <string name="update">Обновить</string>
     <string name="you_searched">Вы искали</string>
     <string name="clear_history">Очистить историю</string>
+    <string name="added_to_history">Добавлено в историю</string>
 </resources>

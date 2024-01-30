@@ -2,8 +2,6 @@ package com.example.playlistmaker
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -14,8 +12,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.adapter.TracksAdapter
+import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.model.Track
 import com.example.playlistmaker.network.SongsApiService
 import com.example.playlistmaker.network.SongsResponse
@@ -47,6 +47,8 @@ class SearchActivity : AppCompatActivity() {
     private val trackHistoryView: LinearLayout by lazy { findViewById(R.id.trackSearchHistory) }
     private val clearHistoryButton: TextView by lazy { findViewById(R.id.clear_history) }
 
+    private lateinit var binding: ActivitySearchBinding
+
     private lateinit var sharedPrefs: SharedPreferences
     private lateinit var searchHistory: SearchHistory
     private lateinit var historyAdapter: TracksAdapter
@@ -70,7 +72,9 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        //setContentView(R.layout.activity_search)
 
         sharedPrefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
         searchHistory = SearchHistory(sharedPrefs)
@@ -83,24 +87,11 @@ class SearchActivity : AppCompatActivity() {
             inputEditText.setText(inputText)
         }
 
-        val simpleTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton.isVisible = !s.isNullOrEmpty()
-                trackHistoryView.visibility =
-                    if (inputEditText.hasFocus() && s?.isEmpty() == true && searchHistory.getSongsFromHistory()
-                            .isNotEmpty()
-                    )
-                        View.VISIBLE else View.GONE
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                inputText = s.toString()
-            }
-
+        inputEditText.doOnTextChanged{text, start, before, count ->
+            clearButton.isVisible = !text.isNullOrEmpty()
+            trackHistoryView.isVisible =
+                inputEditText.hasFocus() && text?.isEmpty() == true && searchHistory.getSongsFromHistory().isNotEmpty()
         }
-        inputEditText.addTextChangedListener(simpleTextWatcher)
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -202,7 +193,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun onTrackClicked(clickedTrack: Track) {
-        Toast.makeText(this, "Добавлено в историю", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.added_to_history), Toast.LENGTH_SHORT).show()
         searchHistory.addSongToHistory(clickedTrack)
     }
 
