@@ -6,7 +6,7 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/trackImage"
+        android:id="@+id/trackIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/icon_padding"
@@ -20,7 +20,7 @@
         android:paddingStart="@dimen/icon_padding">
 
         <TextView
-            android:id="@+id/trackName"
+            android:id="@+id/trackNameTv"
             style="@style/RecyclerTextView"
             android:paddingTop="@dimen/_14dp"
             android:paddingBottom="@dimen/_1dp"
@@ -32,14 +32,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/artistName"
+                android:id="@+id/artistNameTv"
                 style="@style/RecyclerTextView"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="?attr/colorBackgroundFloating" />
 
             <TextView
-                android:id="@+id/trackTime"
+                android:id="@+id/trackTimeTv"
                 style="@style/RecyclerTextView"
                 android:layout_height="wrap_content"
                 android:textColor="?attr/colorBackgroundFloating"
@@ -50,7 +50,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/trackArrow"
+        android:id="@+id/trackArrowIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/icon_padding"

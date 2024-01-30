@@ -11,5 +11,7 @@ data class Song(
     @SerializedName("trackName")
     val trackName: String?,
     @SerializedName("trackTimeMillis")
-    val trackTimeMillis: Long
+    val trackTimeMillis: Long,
+    @SerializedName("trackId")
+    val trackId: Int
 )

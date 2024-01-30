@@ -12,7 +12,8 @@ class SongConverter {
             trackName = song.trackName?: "",
             artistName = song.artistName,
             trackTime = convertor.milsToMinSec(song.trackTimeMillis),
-            artworkUrl100 = song.artworkUrl100
+            artworkUrl100 = song.artworkUrl100,
+            trackId = song.trackId
         )
     }
 }
