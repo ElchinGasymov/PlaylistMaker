@@ -1,11 +1,11 @@
 package com.example.playlistmaker
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -15,6 +15,8 @@ import com.example.playlistmaker.model.Track
 import com.example.playlistmaker.network.SongsApiService
 import com.example.playlistmaker.network.SongsResponse
 import com.example.playlistmaker.ui.converter.SongConverter
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,9 +42,14 @@ class SearchActivity : AppCompatActivity() {
 
     private val baseUrl = "https://itunes.apple.com"
 
+    private val client = OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .build()
+
     private val service = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
+        .client(client)
         .build()
         .create<SongsApiService>()
 
@@ -50,6 +57,7 @@ class SearchActivity : AppCompatActivity() {
 
     val trackList: MutableList<Track> = mutableListOf()
     val tracksAdapter = TracksAdapter(trackList) { clickedTrack ->
+        searchHistory.addSongToHistory(clickedTrack)
         onTrackClicked(clickedTrack)
     }
 
@@ -60,7 +68,9 @@ class SearchActivity : AppCompatActivity() {
 
         sharedPrefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
         searchHistory = SearchHistory(sharedPrefs)
-        historyAdapter = TracksAdapter(searchHistory.getSongsFromHistory().toMutableList()) {}
+        historyAdapter = TracksAdapter(searchHistory.getSongsFromHistory().toMutableList()) { clickedTrack ->
+            onTrackClicked(clickedTrack)
+        }
 
         binding.trackRv.adapter = tracksAdapter
         binding.trackHistoryRv.adapter = historyAdapter
@@ -159,6 +169,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<SongsResponse>, t: Throwable) {
                 setUiByDataState(DataState.Error)
+                t.printStackTrace()
             }
         })
     }
@@ -176,8 +187,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun onTrackClicked(clickedTrack: Track) {
-        Toast.makeText(this, getString(R.string.added_to_history), Toast.LENGTH_SHORT).show()
-        searchHistory.addSongToHistory(clickedTrack)
+        val playerIntent = Intent(this, PlayerActivity::class.java)
+        playerIntent.putExtra(Constants.TRACK_KEY, clickedTrack)
+        startActivity(playerIntent)
     }
 
 }
