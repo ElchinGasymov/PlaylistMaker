@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_16dp"
-        android:background="?attr/colorPrimary"
+        android:background="?android:selectableItemBackground"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toEndOf="@+id/leftGuideline"
         app:layout_constraintTop_toTopOf="parent" />
@@ -186,15 +186,17 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/albumValueTv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="end"
         android:paddingVertical="@dimen/_8dp"
         android:textColor="?attr/colorSecondary"
+        android:gravity="end"
+        android:singleLine="true"
+        app:layout_constraintHorizontal_bias="1"
         app:layout_constraintBottom_toTopOf="@id/yearValueTv"
         app:layout_constraintEnd_toStartOf="@id/rightGuideline"
         app:layout_constraintStart_toEndOf="@+id/albumTv"
-        tools:text="album_value" />
+        tools:text="@tools:sample/lorem/random" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/yearValueTv"
