@@ -19,7 +19,7 @@ class TracksViewHolder(itemView: View, private val clickListener: (Track) -> Uni
 
     fun bind(model: Track) {
 
-        val roundedCornersRadius = itemView.context.resources.getInteger(R.integer.glide_corner_radius)
+        val roundedCornersRadius = itemView.context.resources.getInteger(R.integer.glide_corner_radius_search)
 
         trackName.text = model.trackName
         artistName.text = model.artistName

@@ -13,7 +13,11 @@ class SongConverter {
             artistName = song.artistName,
             trackTime = convertor.milsToMinSec(song.trackTimeMillis),
             artworkUrl100 = song.artworkUrl100,
-            trackId = song.trackId
+            trackId = song.trackId,
+            collectionName = song.collectionName?: "",
+            releaseDate = song.releaseDate?: "",
+            primaryGenreName = song.primaryGenreName?: "",
+            country = song.country?: ""
         )
     }
 }

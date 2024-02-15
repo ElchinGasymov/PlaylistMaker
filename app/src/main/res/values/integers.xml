@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="glide_corner_radius">2</integer>
+    <integer name="glide_corner_radius_search">2</integer>
+    <integer name="glide_corner_radius_player">8</integer>
 </resources>

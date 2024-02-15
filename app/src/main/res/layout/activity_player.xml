@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/_24dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/_24dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/_20dp" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16dp"
+        android:background="?android:selectableItemBackground"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toEndOf="@+id/leftGuideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/coverIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_26dp"
+        app:layout_constraintBottom_toTopOf="@+id/trackName"
+        app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+        app:layout_constraintStart_toEndOf="@id/leftGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/backBtn"
+        tools:srcCompat="@drawable/ic_player_placeholder" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/trackName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_24dp"
+        android:textColor="?attr/colorSecondary"
+        android:textSize="@dimen/_22sp"
+        app:fontFamily="@font/ys_display_medium"
+        app:layout_constraintBottom_toTopOf="@id/artistName"
+        app:layout_constraintStart_toEndOf="@id/leftGuideline"
+        tools:text="trackName" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/artistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_12dp"
+        android:textColor="?attr/colorSecondary"
+        android:textSize="@dimen/_14sp"
+        app:fontFamily="@font/ys_display_medium"
+        app:layout_constraintBottom_toTopOf="@id/playIv"
+        app:layout_constraintStart_toEndOf="@id/leftGuideline"
+        tools:text="artistName" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/addToPlaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/playIv"
+        app:layout_constraintStart_toEndOf="@id/leftGuideline"
+        app:layout_constraintTop_toTopOf="@+id/playIv"
+        app:srcCompat="@drawable/ic_add_to_playlist" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/likeIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/playIv"
+        app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+        app:layout_constraintTop_toTopOf="@+id/playIv"
+        app:srcCompat="@drawable/ic_like" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/playIv"
+        android:layout_width="100dp"
+        android:layout_height="98dp"
+        android:layout_marginTop="@dimen/_30dp"
+        app:layout_constraintBottom_toTopOf="@id/currentTimeTv"
+        app:layout_constraintEnd_toStartOf="@id/likeIv"
+        app:layout_constraintStart_toEndOf="@id/addToPlaylist"
+        app:srcCompat="@drawable/ic_play" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/currentTimeTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorSecondary"
+        app:layout_constraintBottom_toTopOf="@id/durationTv"
+        app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+        app:layout_constraintStart_toEndOf="@id/leftGuideline"
+        tools:text="0:00" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/durationTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_8dp"
+        android:text="@string/estimate"
+        android:textColor="?attr/YP_Text_Gray"
+        app:layout_constraintBottom_toTopOf="@id/albumTv"
+        app:layout_constraintStart_toEndOf="@id/leftGuideline"
+        app:layout_constraintTag="durationTag" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/albumTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_8dp"
+        android:paddingEnd="@dimen/_8dp"
+        android:text="@string/album"
+        android:textColor="?attr/YP_Text_Gray"
+        app:layout_constraintBottom_toTopOf="@id/releaseDateTv"
+        app:layout_constraintStart_toEndOf="@id/leftGuideline"
+        app:layout_constraintTag="albumTag" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/releaseDateTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_8dp"
+        android:text="@string/year"
+        android:textColor="?attr/YP_Text_Gray"
+        app:layout_constraintBottom_toTopOf="@id/genreTv"
+        app:layout_constraintStart_toEndOf="@id/leftGuideline"
+        app:layout_constraintTag="yearTag" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/genreTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_8dp"
+        android:text="@string/genre"
+        android:textColor="?attr/YP_Text_Gray"
+        app:layout_constraintBottom_toTopOf="@id/countryTv"
+        app:layout_constraintStart_toEndOf="@id/leftGuideline"
+        app:layout_constraintTag="genreTag" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/countryTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_8dp"
+        android:text="@string/country"
+        android:textColor="?attr/YP_Text_Gray"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
+        app:layout_constraintStart_toEndOf="@id/leftGuideline"
+        app:layout_constraintTag="countryTag" />
+
+    <!--    <androidx.constraintlayout.widget.Barrier-->
+    <!--        android:id="@+id/textsBarrier"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:barrierDirection="end"-->
+    <!--        app:constraint_referenced_tags="durationTag, albumTag, yearTag, genreTag, countryTag" />-->
+
+    <!--След столбец -->
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/durationValueTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_8dp"
+        android:textColor="?attr/colorSecondary"
+        app:layout_constraintBottom_toTopOf="@id/albumValueTv"
+        app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+        tools:text="duration_value" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/albumValueTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_8dp"
+        android:textColor="?attr/colorSecondary"
+        android:gravity="end"
+        android:singleLine="true"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintBottom_toTopOf="@id/yearValueTv"
+        app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+        app:layout_constraintStart_toEndOf="@+id/albumTv"
+        tools:text="@tools:sample/lorem/random" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/yearValueTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_8dp"
+        android:textColor="?attr/colorSecondary"
+        app:layout_constraintBottom_toTopOf="@id/genreValueTv"
+        app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+        tools:text="year_value" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/genreValueTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_8dp"
+        android:textColor="?attr/colorSecondary"
+        app:layout_constraintBottom_toTopOf="@+id/countryValueTv"
+        app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+        tools:text="genre_value" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/countryValueTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_8dp"
+        android:textColor="?attr/colorSecondary"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
+        app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+        tools:text="country_value" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
