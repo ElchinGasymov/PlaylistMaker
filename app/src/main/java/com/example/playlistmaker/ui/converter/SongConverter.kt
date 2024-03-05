@@ -17,7 +17,8 @@ class SongConverter {
             collectionName = song.collectionName?: "",
             releaseDate = song.releaseDate?: "",
             primaryGenreName = song.primaryGenreName?: "",
-            country = song.country?: ""
+            country = song.country?: "",
+            previewUrl = song.previewUrl?: ""
         )
     }
 }

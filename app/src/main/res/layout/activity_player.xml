@@ -57,6 +57,7 @@
         app:fontFamily="@font/ys_display_medium"
         app:layout_constraintBottom_toTopOf="@id/artistName"
         app:layout_constraintStart_toEndOf="@id/leftGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/coverIv"
         tools:text="trackName" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -91,9 +92,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/playIv"
-        android:layout_width="100dp"
-        android:layout_height="98dp"
-        android:layout_marginTop="@dimen/_30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/currentTimeTv"
         app:layout_constraintEnd_toStartOf="@id/likeIv"
         app:layout_constraintStart_toEndOf="@id/addToPlaylist"
@@ -164,15 +164,6 @@
         app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
         app:layout_constraintStart_toEndOf="@id/leftGuideline"
         app:layout_constraintTag="countryTag" />
-
-    <!--    <androidx.constraintlayout.widget.Barrier-->
-    <!--        android:id="@+id/textsBarrier"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:barrierDirection="end"-->
-    <!--        app:constraint_referenced_tags="durationTag, albumTag, yearTag, genreTag, countryTag" />-->
-
-    <!--След столбец -->
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/durationValueTv"

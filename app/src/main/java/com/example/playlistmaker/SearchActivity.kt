@@ -3,6 +3,8 @@ package com.example.playlistmaker
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -30,9 +32,11 @@ class SearchActivity : AppCompatActivity() {
         private const val EMPTY = ""
         private const val PREFERENCES = "songs_preferences"
         private const val SEARCH_QUERY_KEY = "searchQuery"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
-    private lateinit var binding: ActivitySearchBinding //объявление вью биндинга
+    private lateinit var binding: ActivitySearchBinding
 
     private lateinit var sharedPrefs: SharedPreferences
     private lateinit var searchHistory: SearchHistory
@@ -60,6 +64,11 @@ class SearchActivity : AppCompatActivity() {
         searchHistory.addSongToHistory(clickedTrack)
         onTrackClicked(clickedTrack)
     }
+    private val searchRunnable = Runnable { searchSongs(binding.searchSongEt.text.toString()) }
+
+    private val handler = Handler(Looper.getMainLooper())
+
+    private var isClickAllowed = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +93,7 @@ class SearchActivity : AppCompatActivity() {
             binding.trackSearchHistoryLl.isVisible =
                 binding.searchSongEt.hasFocus() && text?.isEmpty() == true && searchHistory.getSongsFromHistory()
                     .isNotEmpty()
+            searchDebounce()
         }
 
         binding.searchSongEt.setOnEditorActionListener { _, actionId, _ ->
@@ -147,49 +157,72 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchSongs(query: String) {
-        service.getSongs(query).enqueue(object : Callback<SongsResponse> {
-            override fun onResponse(call: Call<SongsResponse>, response: Response<SongsResponse>) {
-                if (response.code() == 200) {
-                    trackList.clear()
-                    if (response.body()?.songs?.isNotEmpty() == true) {
-                        trackList.addAll(response.body()?.songs!!.map {
-                            songConverter.mapToUiModels(it)
-                        })
-                        tracksAdapter.notifyDataSetChanged()
-                    }
-                    if (trackList.isEmpty()) {
-                        setUiByDataState(DataState.Empty)
+        if (query.isNotEmpty()) {
+            setUiByDataState(DataState.Loading)
+            service.getSongs(query).enqueue(object : Callback<SongsResponse> {
+                override fun onResponse(call: Call<SongsResponse>, response: Response<SongsResponse>) {
+                    binding.progressBar.isVisible = false
+                    if (response.code() == 200) {
+                        trackList.clear()
+                        if (response.body()?.songs?.isNotEmpty() == true) {
+                            trackList.addAll(response.body()?.songs!!.map {
+                                songConverter.mapToUiModels(it)
+                            })
+                            tracksAdapter.notifyDataSetChanged()
+                        }
+                        if (trackList.isEmpty()) {
+                            setUiByDataState(DataState.Empty)
+                        } else {
+                            setUiByDataState(DataState.Data)
+                        }
                     } else {
-                        setUiByDataState(DataState.Data)
+                        setUiByDataState(DataState.Error)
                     }
-                } else {
-                    setUiByDataState(DataState.Error)
                 }
-            }
 
-            override fun onFailure(call: Call<SongsResponse>, t: Throwable) {
-                setUiByDataState(DataState.Error)
-                t.printStackTrace()
-            }
-        })
+                override fun onFailure(call: Call<SongsResponse>, t: Throwable) {
+                    binding.progressBar.isVisible = false
+                    setUiByDataState(DataState.Error)
+                    t.printStackTrace()
+                }
+            })
+        }
     }
 
     enum class DataState {
         Data,
         Empty,
-        Error
+        Error,
+        Loading
     }
 
     private fun setUiByDataState(dataState: DataState) {
         binding.trackRv.isVisible = dataState == DataState.Data
         binding.nothingToShowLl.isVisible = dataState == DataState.Empty
         binding.networkProblemsLl.isVisible = dataState == DataState.Error
+        binding.progressBar.isVisible = dataState == DataState.Loading
     }
 
     private fun onTrackClicked(clickedTrack: Track) {
-        val playerIntent = Intent(this, PlayerActivity::class.java)
-        playerIntent.putExtra(Constants.TRACK_KEY, clickedTrack)
-        startActivity(playerIntent)
+        if (clickDebounce()) {
+            val playerIntent = Intent(this, PlayerActivity::class.java)
+            playerIntent.putExtra(Constants.TRACK_KEY, clickedTrack)
+            startActivity(playerIntent)
+        }
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
     }
 
 }
