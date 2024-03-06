@@ -39,4 +39,5 @@
     <dimen name="_100dp">100dp</dimen>
     <dimen name="_30dp">30dp</dimen>
     <dimen name="_20dp">20dp</dimen>
+    <dimen name="_84dp">84dp</dimen>
 </resources>

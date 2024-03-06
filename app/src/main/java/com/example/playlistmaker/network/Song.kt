@@ -22,4 +22,6 @@ data class Song(
     val primaryGenreName: String?,
     @SerializedName("country")
     val country: String?,
+    @SerializedName("previewUrl")
+    val previewUrl: String?
 )
