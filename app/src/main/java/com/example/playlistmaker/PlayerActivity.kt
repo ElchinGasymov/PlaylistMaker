@@ -23,7 +23,7 @@ class PlayerActivity : AppCompatActivity() {
         private const val DELAY = 400L
     }
 
-    private var timerHandler: Handler = Handler(Looper.getMainLooper())
+    private var timerHandler: Handler? = null
 
     private var playerState = STATE_DEFAULT
     private var mediaPlayer = MediaPlayer()
@@ -32,6 +32,8 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        timerHandler = Handler(Looper.getMainLooper())
 
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -93,7 +95,7 @@ class PlayerActivity : AppCompatActivity() {
             val formattedTime = getPosition()
             getPosition()
             binding.currentTimeTv.text = formattedTime
-            timerHandler.postDelayed(this, DELAY)
+            timerHandler?.postDelayed(this, DELAY)
             print(formattedTime)
         }
     }
@@ -122,7 +124,7 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.setOnCompletionListener {
             binding.playIv.setImageDrawable(getDrawable(R.drawable.ic_play))
             playerState = STATE_PREPARED
-            timerHandler.removeCallbacks(timerRunnable)
+            timerHandler?.removeCallbacks(timerRunnable)
             binding.currentTimeTv.text = getString(R.string._00_00)
         }
     }
@@ -131,14 +133,14 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.start()
         binding.playIv.setImageDrawable(getDrawable(R.drawable.ic_pause))
         playerState = STATE_PLAYING
-        timerHandler.post(timerRunnable)
+        timerHandler?.post(timerRunnable)
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
         binding.playIv.setImageDrawable(getDrawable(R.drawable.ic_play))
         playerState = STATE_PAUSED
-        timerHandler.removeCallbacks(timerRunnable)
+        timerHandler?.removeCallbacks(timerRunnable)
     }
 
 }
