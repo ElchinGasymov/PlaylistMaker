@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.tracks
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -11,20 +11,13 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import com.example.playlistmaker.adapter.TracksAdapter
+import com.example.creator.Creator
+import com.example.playlistmaker.Constants
+import com.example.playlistmaker.SearchHistory
 import com.example.playlistmaker.databinding.ActivitySearchBinding
-import com.example.playlistmaker.model.Track
-import com.example.playlistmaker.network.SongsApiService
-import com.example.playlistmaker.network.SongsResponse
-import com.example.playlistmaker.ui.converter.SongConverter
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
+import com.example.playlistmaker.domain.api.TracksInteractor
+import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.ui.player.PlayerActivity
 
 class SearchActivity : AppCompatActivity() {
 
@@ -36,6 +29,8 @@ class SearchActivity : AppCompatActivity() {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
+    private val provideMoviesInteractor = Creator.provideMoviesInteractor()
+
     private lateinit var binding: ActivitySearchBinding
 
     private lateinit var sharedPrefs: SharedPreferences
@@ -44,23 +39,7 @@ class SearchActivity : AppCompatActivity() {
 
     private var inputText: String = ""
 
-    private val baseUrl = "https://itunes.apple.com"
-
-    private val client = OkHttpClient.Builder()
-        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        .build()
-
-    private val service = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(client)
-        .build()
-        .create<SongsApiService>()
-
-    val songConverter = SongConverter()
-
-    val trackList: MutableList<Track> = mutableListOf()
-    val tracksAdapter = TracksAdapter(trackList) { clickedTrack ->
+    private val tracksAdapter = TracksAdapter { clickedTrack ->
         searchHistory.addSongToHistory(clickedTrack)
         onTrackClicked(clickedTrack)
     }
@@ -77,9 +56,10 @@ class SearchActivity : AppCompatActivity() {
 
         sharedPrefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
         searchHistory = SearchHistory(sharedPrefs)
-        historyAdapter = TracksAdapter(searchHistory.getSongsFromHistory().toMutableList()) { clickedTrack ->
+        historyAdapter = TracksAdapter { clickedTrack ->
             onTrackClicked(clickedTrack)
         }
+        historyAdapter.setData(searchHistory.getSongsFromHistory())
 
         binding.trackRv.adapter = tracksAdapter
         binding.trackHistoryRv.adapter = historyAdapter
@@ -157,50 +137,19 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchSongs(query: String) {
-        if (query.isNotEmpty()) {
-            setUiByDataState(DataState.Loading)
-            service.getSongs(query).enqueue(object : Callback<SongsResponse> {
-                override fun onResponse(call: Call<SongsResponse>, response: Response<SongsResponse>) {
-                    binding.progressBar.isVisible = false
-                    if (response.code() == 200) {
-                        trackList.clear()
-                        if (response.body()?.songs?.isNotEmpty() == true) {
-                            trackList.addAll(response.body()?.songs!!.map {
-                                songConverter.mapToUiModels(it)
-                            })
-                            tracksAdapter.notifyDataSetChanged()
-                        }
-                        if (trackList.isEmpty()) {
-                            setUiByDataState(DataState.Empty)
-                        } else {
-                            setUiByDataState(DataState.Data)
-                        }
-                    } else {
-                        setUiByDataState(DataState.Error)
-                    }
-                }
-
-                override fun onFailure(call: Call<SongsResponse>, t: Throwable) {
-                    binding.progressBar.isVisible = false
-                    setUiByDataState(DataState.Error)
-                    t.printStackTrace()
-                }
-            })
-        }
+        provideMoviesInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer{
+            override fun consume(foundTracks: SearchResult) {
+                handler.post { setUiByDataState(foundTracks) }
+            }
+        })
     }
 
-    enum class DataState {
-        Data,
-        Empty,
-        Error,
-        Loading
-    }
-
-    private fun setUiByDataState(dataState: DataState) {
-        binding.trackRv.isVisible = dataState == DataState.Data
-        binding.nothingToShowLl.isVisible = dataState == DataState.Empty
-        binding.networkProblemsLl.isVisible = dataState == DataState.Error
-        binding.progressBar.isVisible = dataState == DataState.Loading
+    private fun setUiByDataState(dataState: SearchResult) {
+        binding.trackRv.isVisible = dataState is SearchResult.Data
+        binding.nothingToShowLl.isVisible = dataState is SearchResult.Empty
+        binding.networkProblemsLl.isVisible = dataState is SearchResult.Error
+        binding.progressBar.isVisible = dataState is SearchResult.Loading
+        tracksAdapter.setData((dataState as? SearchResult.Data)?.trackList?: emptyList())
     }
 
     private fun onTrackClicked(clickedTrack: Track) {

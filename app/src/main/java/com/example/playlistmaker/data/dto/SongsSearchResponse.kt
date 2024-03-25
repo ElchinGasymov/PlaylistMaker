@@ -1,10 +1,10 @@
-package com.example.playlistmaker.network
+package com.example.playlistmaker.data.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class SongsResponse(
+data class SongsSearchResponse(
     @SerializedName("resultCount")
     val resultCount: Int,
     @SerializedName("results")
-    val songs: List<Song>
-)
+    val songs: List<SongDto>
+) : Response()

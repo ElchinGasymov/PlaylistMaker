@@ -1,13 +1,13 @@
 package com.example.playlistmaker.ui.converter
 
-import com.example.playlistmaker.model.Track
-import com.example.playlistmaker.network.Song
+import com.example.playlistmaker.data.dto.SongDto
+import com.example.playlistmaker.domain.model.Track
 
 class SongConverter {
 
     private val convertor = DurationConverter()
 
-    fun mapToUiModels(song: Song): Track {
+    fun mapToUiModels(song: SongDto): Track {
         return Track(
             trackName = song.trackName?: "",
             artistName = song.artistName,
