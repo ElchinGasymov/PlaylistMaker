@@ -94,13 +94,13 @@
         android:id="@+id/playIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/currentTimeTv"
+        app:layout_constraintBottom_toTopOf="@id/currentProgressTimeTv"
         app:layout_constraintEnd_toStartOf="@id/likeIv"
         app:layout_constraintStart_toEndOf="@id/addToPlaylist"
         app:srcCompat="@drawable/ic_play" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/currentTimeTv"
+        android:id="@+id/currentProgressTimeTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="?attr/colorSecondary"
