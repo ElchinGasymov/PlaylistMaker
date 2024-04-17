@@ -97,7 +97,7 @@ class PlayerActivity : AppCompatActivity() {
             trackName.isSelected = true
             artistName.text = track.artistName
             trackName.isSelected = true
-            genreTv.text = track.primaryGenreName
+            genreValueTv.text = track.primaryGenreName
             countryValueTv.text = track.country
             durationValueTv.text = track.trackTime
 

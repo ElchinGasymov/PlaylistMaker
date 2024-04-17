@@ -21,8 +21,10 @@ import com.example.playlistmaker.ui.converter.SongConverter
 
 object Creator {
     private fun getTracksRepository(context: Context): TracksRepository {
-        return TrackRepositoryImpl(RetrofitNetworkClient(context),
-            LocalStorage(context.getSharedPreferences(Constants.HISTORY_KEY, Context.MODE_PRIVATE)), SongConverter())
+        return TrackRepositoryImpl(
+            RetrofitNetworkClient(context),
+            LocalStorage(context.getSharedPreferences(Constants.HISTORY_KEY, Context.MODE_PRIVATE)), SongConverter()
+        )
     }
 
     fun provideTracksInteractor(context: Context): TracksInteractor {
@@ -38,7 +40,7 @@ object Creator {
     }
 
     private fun getSettingsRepository(context: Context): SettingsRepository {
-        return SettingsRepositoryImpl (
+        return SettingsRepositoryImpl(
             ThemeStorage(context.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE))
         )
     }
