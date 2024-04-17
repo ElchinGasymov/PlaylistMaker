@@ -3,9 +3,9 @@ package com.example.playlistmaker.main.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.arch_practice.ui.MainActivity
 import com.example.playlistmaker.databinding.ActivityMainBinding
 import com.example.playlistmaker.media_library.ui.activity.LibraryActivity
-import com.example.playlistmaker.search.ui.activity.SearchActivity
 import com.example.playlistmaker.settings.ui.activity.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.searchBtn.setOnClickListener {
-            val searchIntent = Intent(this, SearchActivity::class.java)
+            val searchIntent = Intent(this, MainActivity::class.java)
             startActivity(searchIntent)
         }
 
