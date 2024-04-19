@@ -18,8 +18,30 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[ViewModel::class.java]
 
-        binding.button.setOnClickListener {
-            Log.d("Tag", viewModel.getTracks())
+        viewModel.liveData.observe(this) { value ->
+            Log.d("button", "LiveData value: $value")
         }
+
+        binding.button.setOnClickListener {
+            viewModel.liveData.value = viewModel.liveData.value?.plus(1)
+        }
+
+        binding.button2.setOnClickListener {
+            viewModel.liveData.value = viewModel.liveData.value?.minus(1)
+        }
+    }
+
+    override fun onDestroy() {
+        viewModel.liveData.observe(this) { value ->
+            Log.d("onDestroy", "LiveData value: $value")
+        }
+        super.onDestroy()
+    }
+
+    override fun onRestart() {
+        viewModel.liveData.observe(this) { value ->
+            Log.d("onRestart", "LiveData value: $value")
+        }
+        super.onRestart()
     }
 }
