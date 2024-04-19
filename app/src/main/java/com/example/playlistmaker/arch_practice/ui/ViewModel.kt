@@ -13,12 +13,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         return interactor.getTracks()
     }
 
-    fun liveDataPlusOne(): Int {
-        return interactor.liveDataPlusOne()
-    }
-
-    fun liveDataMinusOne(): Int {
-        return interactor.liveDataMinusOne()
+    fun setLiveData(): MutableLiveData<Int> {
+        liveData.value = interactor.getData()
+        return liveData
     }
 
 }

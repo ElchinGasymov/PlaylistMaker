@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.button.setOnClickListener {
-            viewModel.liveData.value = viewModel.liveData.value?.plus(1)
+            viewModel.setLiveData()
         }
 
         binding.button2.setOnClickListener {

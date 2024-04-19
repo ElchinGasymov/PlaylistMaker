@@ -10,12 +10,8 @@ class TracksInteractorImpl : TracksInteractor {
         return formatList(tracksRepo.getTracksFromMock())
     }
 
-    override fun liveDataPlusOne(): Int {
-        return tracksRepo.getLiveData().value!!.plus(1)
-    }
-
-    override fun liveDataMinusOne(): Int {
-        return tracksRepo.getLiveData().value!!.minus(1)
+    override fun getData(): Int {
+        return tracksRepo.getNewData()
     }
 
     private fun formatList(list: List<String>): String {
