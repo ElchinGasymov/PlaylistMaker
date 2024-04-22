@@ -31,6 +31,10 @@ class SettingsActivity : AppCompatActivity() {
         initSupportButton()
         initTermsOfUseButton()
 
+        viewModel.isDarkModeOn.observe(this) { isDarkMode ->
+            binding.appThemeSwitch.isChecked = isDarkMode
+        }
+
     }
 
     private fun initToolbar() {
@@ -42,13 +46,10 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun initThemeSwitch() {
-        binding.appThemeSwitch
-            .apply {
-                isChecked = viewModel.isDarkThemeOn()
-                setOnCheckedChangeListener { _, isChecked ->
-                    viewModel.switchTheme(isChecked)
-                }
-            }
+        viewModel.isDarkThemeOn()
+        binding.appThemeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.switchTheme(isChecked)
+        }
     }
 
     private fun initSharingButton() {
