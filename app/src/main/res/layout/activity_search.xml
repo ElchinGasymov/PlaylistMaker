@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:orientation="vertical"
-    tools:context=".ui.tracks.SearchActivity">
+    tools:context=".search.ui.activity.SearchActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/searchToolbar"
@@ -33,6 +33,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textCursorDrawable="@drawable/color_cursor"
                 android:background="?attr/colorContainer"
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="@dimen/_10dp"
@@ -70,6 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:indeterminateTint="?attr/YP_Blue"
+        android:layout_marginTop="@dimen/_100dp"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView

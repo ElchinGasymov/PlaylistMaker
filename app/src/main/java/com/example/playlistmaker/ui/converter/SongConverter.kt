@@ -1,7 +1,7 @@
 package com.example.playlistmaker.ui.converter
 
-import com.example.playlistmaker.data.dto.SongDto
-import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.search.data.model.SongDto
+import com.example.playlistmaker.search.domain.Track
 
 class SongConverter {
 
