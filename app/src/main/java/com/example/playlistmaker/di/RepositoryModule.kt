@@ -9,7 +9,7 @@ import com.example.playlistmaker.settings.domain.SettingsRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<PlayerRepository> {
+    factory<PlayerRepository> {
         PlayerRepositoryImpl(mediaPlayer = get())
     }
 
@@ -21,7 +21,7 @@ val repositoryModule = module {
         )
     }
 
-    single<SettingsRepository> {
+    factory<SettingsRepository> {
         SettingsRepositoryImpl(themeStorage = get())
     }
 }

@@ -9,15 +9,15 @@ import com.example.playlistmaker.settings.domain.impl.SettingsInteractorImpl
 import org.koin.dsl.module
 
 val interactorModule = module {
-    single<PlayerInteractor> {
+    factory<PlayerInteractor> {
         PlayerInteractorImpl(repository = get())
     }
 
-    single<TracksInteractor> {
+    factory<TracksInteractor> {
         TracksInteractorImpl(repository = get())
     }
 
-    single<SettingsInteractor> {
+    factory<SettingsInteractor> {
         SettingsInteractorImpl(repository = get())
     }
 }

@@ -25,7 +25,7 @@ import retrofit2.create
 
 val dataModule = module {
 
-    single<SongsApiService> {
+    factory<SongsApiService> {
         Retrofit.Builder()
             .baseUrl(ApiConstants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -46,12 +46,11 @@ val dataModule = module {
                 Constants.HISTORY_KEY,
                 Context.MODE_PRIVATE
             )
-
     }
 
     factory { Gson() }
 
-    single<NetworkClient> {
+    factory<NetworkClient> {
         RetrofitNetworkClient(
             context = androidContext(),
             service = get()
@@ -74,13 +73,13 @@ val dataModule = module {
         ThemeLocalStorage(get())
     }
 
-    single<SongConverter> {
+    factory<SongConverter> {
         SongConverter(convertor = get())
     }
 
-    single<DurationConverter> {
+    factory<DurationConverter> {
         DurationConverter()
     }
 
-    single<MediaPlayer> { MediaPlayer() }
+    factory<MediaPlayer> { MediaPlayer() }
 }
