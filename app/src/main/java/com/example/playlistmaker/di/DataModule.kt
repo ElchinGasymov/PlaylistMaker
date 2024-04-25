@@ -21,23 +21,25 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 val dataModule = module {
 
-    factory<SongsApiService> {
-        Retrofit.Builder()
-            .baseUrl(ApiConstants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(get())
-            .build()
-            .create<SongsApiService>()
-    }
-
-    factory<OkHttpClient> {
+    single<OkHttpClient> {
         OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
+    }
+
+    single<Retrofit> {
+        Retrofit.Builder()
+            .baseUrl(ApiConstants.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(get<OkHttpClient>())
+            .build()
+    }
+
+    factory<SongsApiService> {
+        get<Retrofit>().create(SongsApiService::class.java)
     }
 
     single {
