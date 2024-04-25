@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.example.playlistmaker.Constants
 import com.example.playlistmaker.settings.data.LocalStorage
 
-class ThemeStorage(private val sharedPreferences: SharedPreferences): LocalStorage {
+class ThemeLocalStorage(private val sharedPreferences: SharedPreferences): LocalStorage {
     override fun switch(darkThemeEnabled: Boolean) {
         sharedPreferences
             .edit()

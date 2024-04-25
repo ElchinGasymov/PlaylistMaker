@@ -14,7 +14,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
-class RetrofitNetworkClient(private val context: Context) : NetworkClient {
+class RetrofitNetworkClient(
+    private val context: Context,
+    private val songsApiService: SongsApiService
+) : NetworkClient {
 
     private val client = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))

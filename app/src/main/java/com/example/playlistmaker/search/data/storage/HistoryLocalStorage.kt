@@ -8,7 +8,7 @@ import com.example.playlistmaker.search.domain.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class LocalStorage(private val preferences: SharedPreferences) : ILocalStorage {
+class HistoryLocalStorage(private val preferences: SharedPreferences, private val gson: Gson) : ILocalStorage {
     override fun addToHistory(track: Track) {
         val currentHistory = getHistory().toMutableList()
 
@@ -31,14 +31,14 @@ class LocalStorage(private val preferences: SharedPreferences) : ILocalStorage {
         val jsonHistory = preferences.getString(HISTORY_KEY, null)
         return if (!jsonHistory.isNullOrEmpty()) {
             val type = object : TypeToken<List<Track>>() {}.type
-            Gson().fromJson(jsonHistory, type)
+            gson.fromJson(jsonHistory, type)
         } else {
             emptyList()
         }
     }
 
     private fun saveHistory(history: List<Track>) {
-        val jsonHistory = Gson().toJson(history)
+        val jsonHistory = gson.toJson(history)
         preferences.edit().putString(HISTORY_KEY, jsonHistory).apply()
     }
 
