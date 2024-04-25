@@ -2,6 +2,7 @@ package com.example.playlistmaker.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.media.MediaPlayer
 import com.example.playlistmaker.ApiConstants
 import com.example.playlistmaker.Constants
 import com.example.playlistmaker.search.data.ILocalStorage
@@ -24,17 +25,19 @@ import retrofit2.create
 
 val dataModule = module {
 
-    val client = OkHttpClient.Builder()
-        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        .build()
-
     single<SongsApiService> {
         Retrofit.Builder()
             .baseUrl(ApiConstants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
+            .client(get())
             .build()
             .create<SongsApiService>()
+    }
+
+    factory<OkHttpClient> {
+        OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .build()
     }
 
     single {
@@ -51,7 +54,7 @@ val dataModule = module {
     single<NetworkClient> {
         RetrofitNetworkClient(
             context = androidContext(),
-            songsApiService = get()
+            service = get()
         )
     }
 
@@ -62,9 +65,9 @@ val dataModule = module {
     single<SharedPreferences> {
         androidContext()
             .getSharedPreferences(
-            Constants.APP_THEME_KEY,
-            Context.MODE_PRIVATE
-        )
+                Constants.APP_THEME_KEY,
+                Context.MODE_PRIVATE
+            )
     }
 
     single<LocalStorage> {
@@ -79,5 +82,5 @@ val dataModule = module {
         DurationConverter()
     }
 
-    //singleOf(::RetrofitNetworkClient).bind<NetworkClient>()
+    single<MediaPlayer> { MediaPlayer() }
 }

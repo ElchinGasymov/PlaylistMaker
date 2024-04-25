@@ -18,6 +18,6 @@ val interactorModule = module {
     }
 
     single<SettingsInteractor> {
-        SettingsInteractorImpl(themeSwitchRepository = get())
+        SettingsInteractorImpl(repository = get())
     }
 }

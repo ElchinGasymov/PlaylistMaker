@@ -1,6 +1,5 @@
 package com.example.playlistmaker.player.ui.activity
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -36,13 +35,10 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
 
-        val track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent?.getParcelableExtra(Constants.TRACK_KEY, Track::class.java)
-        } else {
-            intent?.getParcelableExtra(Constants.TRACK_KEY)
-        }
 
-        showTrack(track!!)
+        @Suppress("DEPRECATION") val track = intent.getSerializableExtra(Constants.TRACK_KEY) as Track
+
+        showTrack(track)
 
         viewModel.preparePlayer(track.previewUrl)
 
