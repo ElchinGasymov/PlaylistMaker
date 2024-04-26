@@ -1,27 +1,23 @@
 package com.example.playlistmaker.search.ui.view_model
 
-import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.Constants
-import com.example.playlistmaker.R
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.search.domain.Track
 import com.example.playlistmaker.search.domain.TracksInteractor
 import com.example.playlistmaker.search.ui.SearchScreenState
 import com.example.playlistmaker.search.ui.activity.SingleLiveEvent
 
-class SearchViewModel(application: Application) : AndroidViewModel(application) {
+class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewModel() {
 
     companion object {
         private val SEARCH_REQUEST_TOKEN = Any()
     }
 
-    private val tracksInteractor = Creator.provideTracksInteractor(getApplication())
     private val _screenState = MutableLiveData<SearchScreenState>()
     private val showToast = SingleLiveEvent<String>()
     private val handler = Handler(Looper.getMainLooper())
@@ -90,7 +86,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                         errorMessage != null -> {
                             renderState(
                                 SearchScreenState.Error(
-                                    message = getApplication<Application>().getString(R.string.no_internet),
+                                    message = errorMessage
                                 )
                             )
                         }

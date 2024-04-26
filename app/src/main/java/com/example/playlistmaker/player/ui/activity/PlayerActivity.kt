@@ -1,10 +1,8 @@
 package com.example.playlistmaker.player.ui.activity
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.Constants
@@ -13,14 +11,15 @@ import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.player.ui.PlayerScreenState
 import com.example.playlistmaker.player.ui.view_model.AudioPlayerViewModel
 import com.example.playlistmaker.search.domain.Track
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
 
-    private lateinit var viewModel: AudioPlayerViewModel
+    private val viewModel by viewModel<AudioPlayerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +27,6 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this)[AudioPlayerViewModel::class.java]
         viewModel.observeState().observe(this) {
             render(it)
         }
@@ -37,13 +35,10 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
 
-        val track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent?.getParcelableExtra(Constants.TRACK_KEY, Track::class.java)
-        } else {
-            intent?.getParcelableExtra(Constants.TRACK_KEY)
-        }
 
-        showTrack(track!!)
+        @Suppress("DEPRECATION") val track = intent.getSerializableExtra(Constants.TRACK_KEY) as Track
+
+        showTrack(track)
 
         viewModel.preparePlayer(track.previewUrl)
 

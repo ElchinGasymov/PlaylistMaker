@@ -3,9 +3,7 @@ package com.example.playlistmaker.ui.converter
 import com.example.playlistmaker.search.data.model.SongDto
 import com.example.playlistmaker.search.domain.Track
 
-class SongConverter {
-
-    private val convertor = DurationConverter()
+class SongConverter(private val convertor: DurationConverter) {
 
     fun mapToUiModels(song: SongDto): Track {
         return Track(
