@@ -27,7 +27,6 @@ class LibraryActivity : AppCompatActivity() {
             }
         }
         tabMediator.attach()
-        //setSupportActionBar(binding.libraryToolbar)
         initToolbar()
     }
 
@@ -38,10 +37,7 @@ class LibraryActivity : AppCompatActivity() {
 
     private fun initToolbar() {
         binding.libraryToolbar.setNavigationOnClickListener {
-            setSupportActionBar(binding.libraryToolbar)
             router.goBack()
-            //finish()
-            //onBackPressed()
         }
     }
 }
