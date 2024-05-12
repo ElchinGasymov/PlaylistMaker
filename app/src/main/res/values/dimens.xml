@@ -41,4 +41,6 @@
     <dimen name="_20dp">20dp</dimen>
     <dimen name="_84dp">84dp</dimen>
     <dimen name="corner_radius_8">8dp</dimen>
+    <dimen name="_106dp">106dp</dimen>
+    <dimen name="_46dp">46dp</dimen>
 </resources>
