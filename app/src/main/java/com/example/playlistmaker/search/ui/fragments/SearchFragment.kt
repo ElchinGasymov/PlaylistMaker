@@ -1,13 +1,16 @@
-package com.example.playlistmaker.search.ui.activity
+package com.example.playlistmaker.search.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.search.domain.Track
 import com.example.playlistmaker.search.ui.Content
@@ -17,7 +20,7 @@ import com.example.playlistmaker.search.ui.adapter.TracksAdapter
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
     private val viewModel by viewModel<SearchViewModel>()
@@ -31,24 +34,29 @@ class SearchActivity : AppCompatActivity() {
         clickOnTrack(it)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FragmentSearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewModel.apply {
 
-            observeState().observe(this@SearchActivity) {
+            observeState().observe(viewLifecycleOwner) {
                 render(it)
             }
 
-            observeShowToast().observe(this@SearchActivity) {
+            observeShowToast().observe(viewLifecycleOwner) {
                 showToast(it)
             }
 
         }
-
-        initToolbar()
 
         initInput()
 
@@ -56,9 +64,8 @@ class SearchActivity : AppCompatActivity() {
 
         initHistory()
 
-        //router = Router(this)
-
-    } //конец onCreate!
+        router = Router(this)
+    }
 
     private fun render(state: SearchScreenState) {
         when (state) {
@@ -80,13 +87,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showToast(additionalMessage: String) {
-        Toast.makeText(this, additionalMessage, Toast.LENGTH_LONG).show()
-    }
-
-    private fun initToolbar() {
-        binding.searchToolbar.setNavigationOnClickListener {
-            router.goBack()
-        }
+        Toast.makeText(requireContext(), additionalMessage, Toast.LENGTH_LONG).show()
     }
 
     private fun initInput() {
@@ -123,10 +124,10 @@ class SearchActivity : AppCompatActivity() {
     private fun clearSearch() {
         searchAdapter.tracks = arrayListOf()
         binding.searchSongEt.setText("")
-        val view = this.currentFocus
+        val view = activity?.currentFocus
         if (view != null) {
-            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
+            val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.hideSoftInputFromWindow(view.windowToken, 0)
         }
         viewModel.clearSearch()
 
@@ -203,5 +204,4 @@ class SearchActivity : AppCompatActivity() {
             }
         }
     }
-
 }

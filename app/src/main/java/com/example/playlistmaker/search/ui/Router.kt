@@ -1,21 +1,21 @@
 package com.example.playlistmaker.search.ui
 
-import android.app.Activity
 import android.content.Intent
+import androidx.fragment.app.Fragment
 import com.example.playlistmaker.Constants
 import com.example.playlistmaker.player.ui.activity.PlayerActivity
 import com.example.playlistmaker.search.domain.Track
 
-class Router(private val activity: Activity) {
+class Router(private val fragment: Fragment) {
 
     fun goBack() {
-        activity.finish()
+        fragment.activity?.finish()
     }
 
     fun openAudioPlayer(track: Track) {
-        val intent = Intent(activity, PlayerActivity::class.java).apply {
+        val intent = Intent(fragment.activity, PlayerActivity::class.java).apply {
             putExtra(Constants.TRACK_KEY, track)
         }
-        activity.startActivity(intent)
+        fragment.activity?.startActivity(intent)
     }
 }
