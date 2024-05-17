@@ -11,10 +11,12 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
+import com.example.playlistmaker.player.ui.fragments.PlayerFragment
 import com.example.playlistmaker.search.domain.Track
 import com.example.playlistmaker.search.ui.Content
-import com.example.playlistmaker.search.ui.Router
 import com.example.playlistmaker.search.ui.SearchScreenState
 import com.example.playlistmaker.search.ui.adapter.TracksAdapter
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
@@ -24,7 +26,6 @@ class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
     private val viewModel by viewModel<SearchViewModel>()
-    private lateinit var router: Router
 
     private val searchAdapter = TracksAdapter {
         clickOnTrack(it)
@@ -59,12 +60,8 @@ class SearchFragment : Fragment() {
         }
 
         initInput()
-
         initSearchResults()
-
         initHistory()
-
-        router = Router(this)
     }
 
     private fun render(state: SearchScreenState) {
@@ -155,7 +152,11 @@ class SearchFragment : Fragment() {
     private fun clickOnTrack(track: Track) {
         if (viewModel.trackIsClickable.value == false) return
         viewModel.onSearchClicked(track)
-        router.openAudioPlayer(track)
+
+        findNavController().navigate(
+            R.id.action_searchFragment_to_playerFragment,
+            PlayerFragment.getInstance(track).arguments
+        )
     }
 
 

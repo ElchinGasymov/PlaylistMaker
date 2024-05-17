@@ -8,15 +8,10 @@ import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.Constants
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.ui.PlayerScreenState
-import com.example.playlistmaker.search.domain.Track
-import com.example.playlistmaker.search.domain.TracksInteractor
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AudioPlayerViewModel(
-    private val playerInteractor: PlayerInteractor,
-    private val trackInteractor: TracksInteractor
-    ) : ViewModel() {
+class AudioPlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<PlayerScreenState>()
 
@@ -84,12 +79,6 @@ class AudioPlayerViewModel(
 
     private fun renderState(state: PlayerScreenState) {
         stateLiveData.postValue(state)
-    }
-
-    fun getTrack(): Track {
-        return trackInteractor
-            .getHistory()
-            .first()
     }
 
 }
