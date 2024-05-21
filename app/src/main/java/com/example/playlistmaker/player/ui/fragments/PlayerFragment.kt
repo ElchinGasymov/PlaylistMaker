@@ -1,11 +1,15 @@
-package com.example.playlistmaker.player.ui.activity
+package com.example.playlistmaker.player.ui.fragments
 
+import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.playlistmaker.Constants
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.player.ui.PlayerScreenState
@@ -15,28 +19,44 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerFragment : Fragment() {
+
+    companion object {
+        const val TRACK = "track"
+        fun getInstance(track: Track): PlayerFragment = PlayerFragment().apply {
+            arguments = bundleOf(TRACK to track)
+        }
+    }
 
     private lateinit var binding: FragmentPlayerBinding
-
     private val viewModel by viewModel<AudioPlayerViewModel>()
+    private lateinit var track: Track
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        binding = FragmentPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        viewModel.observeState().observe(this) {
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
 
         binding.backBtn.setOnClickListener {
-            finish()
+            findNavController().navigateUp()
         }
 
-
-        @Suppress("DEPRECATION") val track = intent.getSerializableExtra(Constants.TRACK_KEY) as Track
+        track = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            requireArguments().getSerializable(TRACK) as Track
+        } else {
+            requireArguments().getSerializable(TRACK, Track::class.java)!!
+        }
 
         showTrack(track)
 

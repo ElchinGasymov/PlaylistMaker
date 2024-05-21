@@ -43,4 +43,5 @@
     <dimen name="corner_radius_8">8dp</dimen>
     <dimen name="_106dp">106dp</dimen>
     <dimen name="_46dp">46dp</dimen>
+    <dimen name="dividerThickness">0.5dp</dimen>
 </resources>

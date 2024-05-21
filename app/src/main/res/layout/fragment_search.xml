@@ -6,13 +6,12 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:orientation="vertical"
-    tools:context=".search.ui.activity.SearchActivity">
+    tools:context=".search.ui.fragments.SearchFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/searchToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/ic_arrow_back"
         app:title="@string/search_button"
         app:titleTextColor="?attr/colorSecondary" />
 

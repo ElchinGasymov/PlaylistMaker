@@ -81,5 +81,4 @@ class AudioPlayerViewModel(private val playerInteractor: PlayerInteractor) : Vie
         stateLiveData.postValue(state)
     }
 
-
 }
