@@ -10,7 +10,7 @@ import com.example.playlistmaker.Constants
 import com.example.playlistmaker.search.domain.Track
 import com.example.playlistmaker.search.domain.TracksInteractor
 import com.example.playlistmaker.search.ui.SearchScreenState
-import com.example.playlistmaker.search.ui.activity.SingleLiveEvent
+import com.example.playlistmaker.search.ui.SingleLiveEvent
 
 class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewModel() {
 

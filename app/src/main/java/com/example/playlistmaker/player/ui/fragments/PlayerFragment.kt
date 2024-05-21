@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -28,7 +30,7 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    private lateinit var binding: FragmentPlayerBinding
+    private val binding: FragmentPlayerBinding by viewBinding(CreateMethod.INFLATE)
     private val viewModel by viewModel<AudioPlayerViewModel>()
     private lateinit var track: Track
 
@@ -37,7 +39,6 @@ class PlayerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPlayerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
