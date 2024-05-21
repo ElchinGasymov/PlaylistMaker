@@ -2,10 +2,13 @@ package com.example.playlistmaker.player.ui.fragments
 
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -27,19 +30,17 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    //private lateinit var binding: FragmentPlayerBinding
-    private val binding: FragmentPlayerBinding by viewBinding()
+    private val binding: FragmentPlayerBinding by viewBinding(CreateMethod.INFLATE)
     private val viewModel by viewModel<AudioPlayerViewModel>()
     private lateinit var track: Track
 
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View {
-//        //binding = FragmentPlayerBinding.inflate(inflater, container, false)
-//        return binding.root
-//    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
