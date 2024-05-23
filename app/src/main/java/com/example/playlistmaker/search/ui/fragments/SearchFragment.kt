@@ -156,8 +156,11 @@ class SearchFragment : Fragment() {
 
         findNavController().navigate(
             R.id.action_searchFragment_to_playerFragment,
-            PlayerFragment.getInstance(track).arguments
+            PlayerFragment().arguments // так ошибка
         )
+//        val action = SearchFragmentDirections.actionSearchFragmentToPlayerFragment(track)
+//        findNavController().navigate(action) // так тоже ошибка
+
     }
 
 
