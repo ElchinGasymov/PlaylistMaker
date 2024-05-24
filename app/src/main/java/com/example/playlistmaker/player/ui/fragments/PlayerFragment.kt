@@ -1,13 +1,12 @@
 package com.example.playlistmaker.player.ui.fragments
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
@@ -23,16 +22,9 @@ import java.util.Locale
 
 class PlayerFragment : Fragment() {
 
-    companion object {
-        const val TRACK = "track"
-        fun getInstance(track: Track): PlayerFragment = PlayerFragment().apply {
-            arguments = bundleOf(TRACK to track)
-        }
-    }
-
     private val binding: FragmentPlayerBinding by viewBinding(CreateMethod.INFLATE)
     private val viewModel by viewModel<AudioPlayerViewModel>()
-    private lateinit var track: Track
+    private val args: PlayerFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,11 +45,7 @@ class PlayerFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        track = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getSerializable(TRACK) as Track
-        } else {
-            requireArguments().getSerializable(TRACK, Track::class.java)!!
-        }
+        val track = args.track
 
         showTrack(track)
 

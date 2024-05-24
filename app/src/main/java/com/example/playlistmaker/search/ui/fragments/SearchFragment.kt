@@ -14,9 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
-import com.example.playlistmaker.player.ui.fragments.PlayerFragment
 import com.example.playlistmaker.search.domain.Track
 import com.example.playlistmaker.search.ui.Content
 import com.example.playlistmaker.search.ui.SearchScreenState
@@ -154,10 +152,9 @@ class SearchFragment : Fragment() {
         if (viewModel.trackIsClickable.value == false) return
         viewModel.onSearchClicked(track)
 
-        findNavController().navigate(
-            R.id.action_searchFragment_to_playerFragment,
-            PlayerFragment.getInstance(track).arguments
-        )
+        val action = SearchFragmentDirections.actionSearchFragmentToPlayerFragment(track)
+        findNavController().navigate(action)
+
     }
 
 
