@@ -22,16 +22,8 @@ import java.util.Locale
 
 class PlayerFragment : Fragment() {
 
-//    companion object {
-//        const val TRACK = "track"
-//        fun getInstance(track: Track): PlayerFragment = PlayerFragment().apply {
-//            arguments = bundleOf(TRACK to track)
-//        }
-//    }
-
     private val binding: FragmentPlayerBinding by viewBinding(CreateMethod.INFLATE)
     private val viewModel by viewModel<AudioPlayerViewModel>()
-    //private lateinit var track: Track
     private val args: PlayerFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -52,12 +44,6 @@ class PlayerFragment : Fragment() {
         binding.backBtn.setOnClickListener {
             findNavController().navigateUp()
         }
-
-//        track = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-//            requireArguments().getSerializable(TRACK) as Track
-//        } else {
-//            requireArguments().getSerializable(TRACK, Track::class.java)!!
-//        }
 
         val track = args.track
 
