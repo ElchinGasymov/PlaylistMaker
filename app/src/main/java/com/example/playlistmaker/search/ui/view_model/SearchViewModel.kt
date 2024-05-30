@@ -1,29 +1,33 @@
 package com.example.playlistmaker.search.ui.view_model
 
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.Constants
 import com.example.playlistmaker.search.domain.Track
 import com.example.playlistmaker.search.domain.TracksInteractor
 import com.example.playlistmaker.search.ui.SearchScreenState
 import com.example.playlistmaker.search.ui.SingleLiveEvent
+import com.example.playlistmaker.utils.debounce
+import kotlinx.coroutines.launch
 
 class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewModel() {
 
-    companion object {
-        private val SEARCH_REQUEST_TOKEN = Any()
-    }
-
     private val _screenState = MutableLiveData<SearchScreenState>()
     private val showToast = SingleLiveEvent<String>()
-    private val handler = Handler(Looper.getMainLooper())
-    private var lastQuery: String? = null
     private val _trackIsClickable = MutableLiveData(true)
     var trackIsClickable: LiveData<Boolean> = _trackIsClickable
+
+    private val tracksSearchDebounce =
+        debounce<String>(Constants.SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { query ->
+            getTracks(query)
+        }
+
+    private val trackOnClickDebounce =
+        debounce<Boolean>(Constants.CLICK_DEBOUNCE_DELAY, viewModelScope, false) {
+            _trackIsClickable.value = it
+        }
 
     init {
         showHistory()
@@ -32,83 +36,49 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     fun observeState(): LiveData<SearchScreenState> = _screenState
     fun observeShowToast(): LiveData<String> = showToast
 
-    private fun makeDelaySearching(changedText: String) {
-        val searchRunnable = Runnable { getTracks(changedText) }
-        val postTime = SystemClock.uptimeMillis() + Constants.SEARCH_DEBOUNCE_DELAY
-        handler.postAtTime(
-            searchRunnable,
-            SEARCH_REQUEST_TOKEN,
-            postTime,
-        )
-    }
-
-    fun searchDebounce(changedText: String? = lastQuery) {
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-        if (!changedText.isNullOrEmpty()) {
-            if ((lastQuery == changedText)) {
-                return
-            }
-            this.lastQuery = changedText
-            makeDelaySearching(changedText)
+    fun searchDebounce(query: String) {
+        if (query.isNotEmpty()) {
+            tracksSearchDebounce(query)
         }
     }
 
     fun onSearchClicked(track: Track) {
-        trackOnClickDebounce()
+        trackOnClickDebounce(true)
         addToHistory(track)
-    }
-
-    private fun trackOnClickDebounce() {
-        _trackIsClickable.value = false
-        handler.postDelayed({ _trackIsClickable.value = true }, Constants.CLICK_DEBOUNCE_DELAY)
-    }
-
-    fun onDestroy() {
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
 
     fun getTracks(query: String) {
         if (query.isNotEmpty()) {
 
-            handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-
             renderState(SearchScreenState.Loading)
 
-            tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer {
-                override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
-
-                    val tracks = arrayListOf<Track>()
-                    if (foundTracks != null) {
-                        tracks.addAll(foundTracks)
+            viewModelScope.launch {
+                tracksInteractor.searchTracks(query)
+                    .collect { pair ->
+                        processResult(pair.first, pair.second)
                     }
+            }
+        }
+    }
 
-                    when {
-                        errorMessage != null -> {
-                            renderState(
-                                SearchScreenState.Error(
-                                    message = errorMessage
-                                )
-                            )
-                        }
+    private fun processResult(foundTracks: List<Track>?, errorMessage: String?) {
+        val tracks = arrayListOf<Track>()
+        if (foundTracks != null) {
+            tracks.addAll(foundTracks)
+        }
 
-                        tracks.isEmpty() -> {
-                            renderState(
-                                SearchScreenState.NothingFound
-                            )
-                        }
+        when {
+            errorMessage != null -> {
+                renderState(SearchScreenState.Error(message = errorMessage))
+            }
 
-                        else -> {
-                            renderState(
-                                SearchScreenState.Success(
-                                    tracks = tracks,
-                                )
-                            )
-                        }
-                    }
-                }
+            tracks.isEmpty() -> {
+                renderState(SearchScreenState.NothingFound)
+            }
 
-
-            })
+            else -> {
+                renderState(SearchScreenState.Success(tracks = tracks))
+            }
         }
     }
 

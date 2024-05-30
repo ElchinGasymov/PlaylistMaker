@@ -9,6 +9,8 @@ import com.example.playlistmaker.search.domain.Track
 import com.example.playlistmaker.search.domain.TracksRepository
 import com.example.playlistmaker.ui.converter.SongConverter
 import com.example.playlistmaker.utils.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class TrackRepositoryImpl(
     private val networkClient: NetworkClient,
@@ -16,22 +18,22 @@ class TrackRepositoryImpl(
     private val songConverter: SongConverter
     ) : TracksRepository {
 
-    override fun searchTracks(query: String): Resource<List<Track>> {
+    override fun searchTracks(query: String): Flow<Resource<List<Track>>> = flow {
 
         val response = networkClient.doRequest(SongsSearchRequest(query))
 
         when (response.resultCode) {
             ApiConstants.NO_INTERNET_CONNECTION_CODE -> {
-                return Resource.Error(ApiConstants.INTERNET_CONNECTION_ERROR)
+                emit(Resource.Error(ApiConstants.INTERNET_CONNECTION_ERROR))
             }
             ApiConstants.SUCCESS_CODE -> {
                val tracks = (response as SongsSearchResponse).songs.map { song ->
                     songConverter.mapToUiModels(song = song)
                 }
-                return Resource.Success(tracks)
+                emit(Resource.Success(tracks))
             }
             else -> {
-                return Resource.Error(ApiConstants.SERVER_ERROR)
+                emit(Resource.Error(ApiConstants.SERVER_ERROR))
             }
         }
     }

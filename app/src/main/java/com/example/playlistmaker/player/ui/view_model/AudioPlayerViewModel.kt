@@ -1,13 +1,15 @@
 package com.example.playlistmaker.player.ui.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.Constants
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.ui.PlayerScreenState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -17,9 +19,7 @@ class AudioPlayerViewModel(private val playerInteractor: PlayerInteractor) : Vie
 
     fun observeState(): LiveData<PlayerScreenState> = stateLiveData
 
-    private val handler = Handler(Looper.getMainLooper())
-
-    private val updatePlayingTimeRunnable = Runnable { updatePlayingTime() }
+    private var progressTimer: Job? = null
 
     fun preparePlayer(url: String) {
         renderState(PlayerScreenState.Preparing)
@@ -29,7 +29,7 @@ class AudioPlayerViewModel(private val playerInteractor: PlayerInteractor) : Vie
                 renderState(PlayerScreenState.Stopped)
             },
             onCompletionListener = {
-                handler.removeCallbacks(updatePlayingTimeRunnable)
+                progressTimer?.cancel()
                 renderState(PlayerScreenState.Stopped)
             }
         )
@@ -38,13 +38,13 @@ class AudioPlayerViewModel(private val playerInteractor: PlayerInteractor) : Vie
     private fun startPlayer() {
         playerInteractor.startPlayer()
         renderState(PlayerScreenState.Playing)
-        handler.postDelayed(updatePlayingTimeRunnable, Constants.DELAY_MILLIS)
+        updatePlayingTime()
     }
 
     fun pausePlayer() {
         playerInteractor.pausePlayer()
         renderState(PlayerScreenState.Paused)
-        handler.removeCallbacks(updatePlayingTimeRunnable)
+        progressTimer?.cancel()
     }
 
     private fun isPlaying(): Boolean {
@@ -64,17 +64,21 @@ class AudioPlayerViewModel(private val playerInteractor: PlayerInteractor) : Vie
     }
 
     private fun updatePlayingTime() {
-        renderState(
-            PlayerScreenState.UpdatePlayingTime(
-                SimpleDateFormat(
-                    "mm:ss",
-                    Locale.getDefault()
-                ).format(
-                    getCurrentPosition()
+        progressTimer = viewModelScope.launch {
+            while (isPlaying()) {
+                delay(Constants.DELAY_MILLIS)
+                renderState(
+                    PlayerScreenState.UpdatePlayingTime(
+                        SimpleDateFormat(
+                            "mm:ss",
+                            Locale.getDefault()
+                        ).format(
+                            getCurrentPosition()
+                        )
+                    )
                 )
-            )
-        )
-        handler.postDelayed(updatePlayingTimeRunnable, Constants.DELAY_MILLIS)
+            }
+        }
     }
 
     private fun renderState(state: PlayerScreenState) {
