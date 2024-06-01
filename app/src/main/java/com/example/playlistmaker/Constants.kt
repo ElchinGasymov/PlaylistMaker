@@ -2,7 +2,7 @@ package com.example.playlistmaker
 
 class Constants {
     companion object {
-        const val DELAY_MILLIS = 500L
+        const val DELAY_MILLIS = 300L
         const val TRACK_KEY: String = "track"
         const val HISTORY_KEY = "history_tracks_key"
         const val MAX_HISTORY_SIZE = 10

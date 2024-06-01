@@ -41,7 +41,7 @@ class PlayerFragment : Fragment() {
             render(it)
         }
 
-        binding.backBtn.setOnClickListener {
+        binding.backBtn.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
 
