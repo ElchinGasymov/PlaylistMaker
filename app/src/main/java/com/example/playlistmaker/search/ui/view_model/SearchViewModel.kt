@@ -10,6 +10,7 @@ import com.example.playlistmaker.search.domain.TracksInteractor
 import com.example.playlistmaker.search.ui.SearchScreenState
 import com.example.playlistmaker.search.ui.SingleLiveEvent
 import com.example.playlistmaker.utils.debounce
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewModel() {
@@ -18,6 +19,8 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     private val showToast = SingleLiveEvent<String>()
     private val _trackIsClickable = MutableLiveData(true)
     var trackIsClickable: LiveData<Boolean> = _trackIsClickable
+    private var job: Job? = null
+    private var currentSearchQuery: String? = null
 
     private val tracksSearchDebounce =
         debounce<String>(Constants.SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { query ->
@@ -37,7 +40,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     fun observeShowToast(): LiveData<String> = showToast
 
     fun searchDebounce(query: String) {
-        if (query.isNotEmpty()) {
+        if (query.isNotEmpty() && query != currentSearchQuery) {
             tracksSearchDebounce(query)
         }
     }
@@ -48,11 +51,11 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     }
 
     fun getTracks(query: String) {
-        if (query.isNotEmpty()) {
-
+        if (query.isNotEmpty() && query != currentSearchQuery) {
             renderState(SearchScreenState.Loading)
+            currentSearchQuery = query
 
-            viewModelScope.launch {
+            job = viewModelScope.launch {
                 tracksInteractor.searchTracks(query)
                     .collect { pair ->
                         processResult(pair.first, pair.second)
@@ -88,6 +91,8 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     }
 
     fun clearSearch() {
+        job?.cancel()
+        currentSearchQuery = null
         val historyTracks = showHistory()
         if (historyTracks.isNotEmpty()) {
             renderState(SearchScreenState.ShowHistory(historyTracks as MutableList<Track>))
