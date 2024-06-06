@@ -19,7 +19,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     private val showToast = SingleLiveEvent<String>()
     private val _trackIsClickable = MutableLiveData(true)
     var trackIsClickable: LiveData<Boolean> = _trackIsClickable
-    private var job: Job? = null
+    private var searchJob: Job? = null
     private var currentSearchQuery: String? = null
 
     private val tracksSearchDebounce =
@@ -55,7 +55,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
             renderState(SearchScreenState.Loading)
             currentSearchQuery = query
 
-            job = viewModelScope.launch {
+            searchJob = viewModelScope.launch {
                 tracksInteractor.searchTracks(query)
                     .collect { pair ->
                         processResult(pair.first, pair.second)
@@ -91,7 +91,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     }
 
     fun clearSearch() {
-        job?.cancel()
+        searchJob?.cancel()
         currentSearchQuery = null
         val historyTracks = showHistory()
         if (historyTracks.isNotEmpty()) {
