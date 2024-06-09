@@ -166,6 +166,7 @@ class SearchFragment : Fragment() {
                 binding.trackSearchHistoryLl.isVisible = false
                 binding.progressBar.isVisible = false
                 binding.nothingToShowLl.isVisible = true
+                binding.clearHistoryBtn.isVisible = false
             }
 
             Content.ERROR -> {
@@ -174,6 +175,7 @@ class SearchFragment : Fragment() {
                 binding.trackSearchHistoryLl.isVisible = false
                 binding.progressBar.isVisible = false
                 binding.nothingToShowLl.isVisible = false
+                binding.clearHistoryBtn.isVisible = false
             }
 
             Content.TRACKS_HISTORY -> {
@@ -183,6 +185,7 @@ class SearchFragment : Fragment() {
                 binding.trackSearchHistoryLl.isVisible = true
                 binding.progressBar.isVisible = false
                 binding.nothingToShowLl.isVisible = false
+                binding.clearHistoryBtn.isVisible = true
             }
 
             Content.SEARCH_RESULT -> {
@@ -192,6 +195,7 @@ class SearchFragment : Fragment() {
                 binding.trackSearchHistoryLl.isVisible = false
                 binding.progressBar.isVisible = false
                 binding.nothingToShowLl.isVisible = false
+                binding.clearHistoryBtn.isVisible = false
             }
 
             Content.LOADING -> {
@@ -200,6 +204,7 @@ class SearchFragment : Fragment() {
                 binding.trackSearchHistoryLl.isVisible = false
                 binding.progressBar.isVisible = true
                 binding.nothingToShowLl.isVisible = false
+                binding.clearHistoryBtn.isVisible = false
             }
         }
     }

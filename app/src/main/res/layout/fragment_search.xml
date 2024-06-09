@@ -32,7 +32,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textCursorDrawable="@drawable/color_cursor"
                 android:background="?attr/colorContainer"
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="@dimen/_10dp"
@@ -46,7 +45,8 @@
                 android:paddingStart="@dimen/_12dp"
                 android:singleLine="true"
                 android:textColor="?attr/YP_Black"
-                android:textColorHint="?attr/colorOnPrimary" />
+                android:textColorHint="?attr/colorOnPrimary"
+                android:textCursorDrawable="@drawable/color_cursor" />
 
             <ImageView
                 android:id="@+id/clearSearchBtn"
@@ -69,8 +69,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:indeterminateTint="?attr/YP_Blue"
         android:layout_marginTop="@dimen/_100dp"
+        android:indeterminateTint="?attr/YP_Blue"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -110,21 +110,23 @@
                 android:layout_marginTop="@dimen/_18dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/clearHistoryBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_24dp"
-                android:backgroundTint="?attr/colorSecondary"
-                android:fontFamily="@font/ys_display_medium"
-                android:hint="@string/clear_history"
-                android:textColorHint="?attr/colorPrimary"
-                android:textSize="@dimen/_14sp"
-                app:cornerRadius="@dimen/_54dp" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/clearHistoryBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_24dp"
+        android:layout_marginBottom="@dimen/_60dp"
+        android:backgroundTint="?attr/colorSecondary"
+        android:fontFamily="@font/ys_display_medium"
+        android:hint="@string/clear_history"
+        android:textColorHint="?attr/colorPrimary"
+        android:textSize="@dimen/_14sp"
+        android:visibility="gone"
+        app:cornerRadius="@dimen/_54dp" />
 
     <LinearLayout
         android:id="@+id/nothingToShowLl"

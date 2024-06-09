@@ -44,4 +44,5 @@
     <dimen name="_106dp">106dp</dimen>
     <dimen name="_46dp">46dp</dimen>
     <dimen name="dividerThickness">0.5dp</dimen>
+    <dimen name="_60dp">60dp</dimen>
 </resources>

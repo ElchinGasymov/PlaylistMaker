@@ -27,21 +27,21 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="@dimen/_20dp" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/backBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_16dp"
         android:background="?android:selectableItemBackground"
-        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintBottom_toTopOf="@+id/coverIv"
+        app:layout_constraintEnd_toEndOf="@+id/rightGuideline"
         app:layout_constraintStart_toEndOf="@+id/leftGuideline"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/coverIv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_26dp"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="@dimen/_0dp"
         app:layout_constraintBottom_toTopOf="@+id/trackName"
         app:layout_constraintEnd_toStartOf="@id/rightGuideline"
         app:layout_constraintStart_toEndOf="@id/leftGuideline"
@@ -50,16 +50,19 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/trackName"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_0dp"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/_24dp"
+        android:singleLine="true"
         android:textColor="?attr/colorSecondary"
         android:textSize="@dimen/_22sp"
         app:fontFamily="@font/ys_display_medium"
         app:layout_constraintBottom_toTopOf="@id/artistName"
+        app:layout_constraintEnd_toStartOf="@+id/rightGuideline"
+        app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toEndOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@+id/coverIv"
-        tools:text="trackName" />
+        tools:text="@tools:sample/lorem/random" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/artistName"
@@ -71,6 +74,7 @@
         app:fontFamily="@font/ys_display_medium"
         app:layout_constraintBottom_toTopOf="@id/playIv"
         app:layout_constraintStart_toEndOf="@id/leftGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/trackName"
         tools:text="artistName" />
 
     <androidx.appcompat.widget.AppCompatImageView
