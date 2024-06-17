@@ -1,6 +1,7 @@
 package com.example.playlistmaker.search.data.impl
 
 import com.example.playlistmaker.ApiConstants
+import com.example.playlistmaker.media_library.data.db.AppDatabase
 import com.example.playlistmaker.search.data.ILocalStorage
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.SongsSearchRequest
@@ -15,7 +16,8 @@ import kotlinx.coroutines.flow.flow
 class TrackRepositoryImpl(
     private val networkClient: NetworkClient,
     private val historyLocalStorage: ILocalStorage,
-    private val songConverter: SongConverter
+    private val songConverter: SongConverter,
+    private val database: AppDatabase
     ) : TracksRepository {
 
     override fun searchTracks(query: String): Flow<Resource<List<Track>>> = flow {
@@ -30,6 +32,12 @@ class TrackRepositoryImpl(
                val tracks = (response as SongsSearchResponse).songs.map { song ->
                     songConverter.mapToUiModels(song = song)
                 }
+                val favouriteIds = database.trackDao().getIds()
+                tracks.forEach { track ->
+                    if (favouriteIds.contains(track.trackId)) {
+                        track.isFavorite = true
+                    }
+                }
                 emit(Resource.Success(tracks))
             }
             else -> {
@@ -38,7 +46,7 @@ class TrackRepositoryImpl(
         }
     }
 
-    override fun addTrackToHistory(track: Track) {
+    override suspend fun addTrackToHistory(track: Track) {
         historyLocalStorage.addToHistory(track)
     }
 
@@ -46,7 +54,7 @@ class TrackRepositoryImpl(
         historyLocalStorage.clearHistory()
     }
 
-    override fun getHistory(): List<Track> {
+    override suspend fun getHistory(): List<Track> {
         return historyLocalStorage.getHistory()
     }
 }

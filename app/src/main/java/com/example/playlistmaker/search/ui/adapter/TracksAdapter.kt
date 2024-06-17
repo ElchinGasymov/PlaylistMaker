@@ -10,7 +10,7 @@ class TracksAdapter(
     private val clickListener: (Track) -> Unit
 ) : RecyclerView.Adapter<TracksViewHolder>() {
 
-    var tracks: MutableList<Track> = mutableListOf()
+    var tracks: List<Track> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TracksViewHolder {
         val binding = TrackViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)

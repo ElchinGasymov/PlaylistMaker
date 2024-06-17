@@ -23,7 +23,7 @@ class TracksInteractorImpl(private val repository: TracksRepository) : TracksInt
         }
     }
 
-    override fun addTrackToHistory(track: Track) {
+    override suspend fun addTrackToHistory(track: Track) {
         repository.addTrackToHistory(track)
     }
 
@@ -31,7 +31,7 @@ class TracksInteractorImpl(private val repository: TracksRepository) : TracksInt
         repository.clearHistory()
     }
 
-    override fun getHistory(): List<Track> {
+    override suspend fun getHistory(): List<Track> {
         return repository.getHistory()
     }
 }

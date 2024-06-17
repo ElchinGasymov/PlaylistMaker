@@ -5,19 +5,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.Constants
+import com.example.playlistmaker.media_library.domain.db.FavoriteTrackInteractor
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.ui.PlayerScreenState
+import com.example.playlistmaker.search.domain.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AudioPlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewModel() {
+class AudioPlayerViewModel(
+    private val playerInteractor: PlayerInteractor,
+    private val favoriteTrackinteractor: FavoriteTrackInteractor
+) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<PlayerScreenState>()
-
+    private val isFavoriteLiveData = MutableLiveData<Boolean>()
     fun observeState(): LiveData<PlayerScreenState> = stateLiveData
+    fun observeFavoriteState(): LiveData<Boolean> = isFavoriteLiveData
 
     private var progressTimer: Job? = null
 
@@ -83,6 +89,18 @@ class AudioPlayerViewModel(private val playerInteractor: PlayerInteractor) : Vie
 
     private fun renderState(state: PlayerScreenState) {
         stateLiveData.postValue(state)
+    }
+
+    fun onFavoriteClicked(track: Track) {
+        viewModelScope.launch {
+            if (!track.isFavorite) {
+                favoriteTrackinteractor.likeTrack(track)
+                track.isFavorite = true
+            } else {
+                favoriteTrackinteractor.unlikeTrack(track)
+                track.isFavorite = false
+            }
+        }
     }
 
 }

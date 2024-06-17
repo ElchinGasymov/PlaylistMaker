@@ -3,8 +3,11 @@ package com.example.playlistmaker.di
 import android.content.Context
 import android.content.SharedPreferences
 import android.media.MediaPlayer
+import androidx.room.Room
 import com.example.playlistmaker.ApiConstants
 import com.example.playlistmaker.Constants
+import com.example.playlistmaker.media_library.data.db.AppDatabase
+import com.example.playlistmaker.media_library.data.db.TrackDbConvertor
 import com.example.playlistmaker.search.data.ILocalStorage
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.network.RetrofitNetworkClient
@@ -60,7 +63,11 @@ val dataModule = module {
     }
 
     single<ILocalStorage> {
-        HistoryLocalStorage(get(), get())
+        HistoryLocalStorage(
+            get(),
+            get(),
+            get()
+        )
     }
 
     single<SharedPreferences> {
@@ -84,4 +91,11 @@ val dataModule = module {
     }
 
     factory<MediaPlayer> { MediaPlayer() }
+
+    single<AppDatabase> {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .build()
+    }
+
+    factory<TrackDbConvertor> { TrackDbConvertor() }
 }
