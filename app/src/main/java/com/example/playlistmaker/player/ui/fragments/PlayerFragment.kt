@@ -1,6 +1,7 @@
 package com.example.playlistmaker.player.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,7 +60,10 @@ class PlayerFragment : Fragment() {
             viewModel.playbackControl()
         }
 
+        initLikeButton(track)
+
         binding.likeIv.setOnClickListener {
+            Log.d("TAG123", "onViewCreated: setOnClickListener")
             viewModel.onFavoriteClicked(track)
         }
     }
@@ -135,9 +139,16 @@ class PlayerFragment : Fragment() {
     }
 
     private fun renderLikeButton(isFavorite: Boolean) {
-        val imageResource = if (isFavorite) R.drawable.ic_like
-        else R.drawable.ic_dislike
+        val imageResource = if (isFavorite) {
+            R.drawable.ic_is_liked
+        } else {
+            R.drawable.ic_is_not_liked
+        }
         binding.likeIv.setImageResource(imageResource)
+    }
+
+    private fun initLikeButton(track: Track) {
+        viewModel.onFavoriteClicked(track)
     }
 
 }

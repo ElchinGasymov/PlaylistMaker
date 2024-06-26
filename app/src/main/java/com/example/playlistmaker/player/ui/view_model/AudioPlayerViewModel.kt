@@ -1,5 +1,6 @@
 package com.example.playlistmaker.player.ui.view_model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,8 +22,9 @@ class AudioPlayerViewModel(
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<PlayerScreenState>()
-    private val isFavoriteLiveData = MutableLiveData<Boolean>()
     fun observeState(): LiveData<PlayerScreenState> = stateLiveData
+
+    private val isFavoriteLiveData = MutableLiveData<Boolean>()
     fun observeFavoriteState(): LiveData<Boolean> = isFavoriteLiveData
 
     private var progressTimer: Job? = null
@@ -93,12 +95,17 @@ class AudioPlayerViewModel(
 
     fun onFavoriteClicked(track: Track) {
         viewModelScope.launch {
-            if (!track.isFavorite) {
+            Log.d("TAG123", "onFavoriteClicked: ")
+            if (isFavoriteLiveData.value == false) {
+                Log.d("TAG123", "if (!track.isFavorite): ")
                 favoriteTrackinteractor.likeTrack(track)
-                track.isFavorite = true
+                isFavoriteLiveData.value = true
+                Log.d("TAG123", "now isFavoriteLiveData.value = ${isFavoriteLiveData.value} ")
             } else {
+                Log.d("TAG123", " else")
                 favoriteTrackinteractor.unlikeTrack(track)
-                track.isFavorite = false
+                isFavoriteLiveData.value = false
+                Log.d("TAG123", "now isFavoriteLiveData.value = ${isFavoriteLiveData.value} ")
             }
         }
     }

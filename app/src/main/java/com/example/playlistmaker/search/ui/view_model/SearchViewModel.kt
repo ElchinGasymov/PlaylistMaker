@@ -94,12 +94,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     fun clearSearch() {
         searchJob?.cancel()
         currentSearchQuery = null
-        val historyTracks = showHistory()
-        if (historyTracks.isNotEmpty()) {
-            renderState(SearchScreenState.ShowHistory(historyTracks as MutableList<Track>))
-        } else {
-            renderState(SearchScreenState.Success(arrayListOf()))
-        }
+        showHistory()
     }
 
     fun clearHistory() {
