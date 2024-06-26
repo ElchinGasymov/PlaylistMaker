@@ -1,6 +1,5 @@
 package com.example.playlistmaker.player.ui.view_model
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -95,19 +94,18 @@ class AudioPlayerViewModel(
 
     fun onFavoriteClicked(track: Track) {
         viewModelScope.launch {
-            Log.d("TAG123", "onFavoriteClicked: ")
             if (isFavoriteLiveData.value == false) {
-                Log.d("TAG123", "if (!track.isFavorite): ")
                 favoriteTrackinteractor.likeTrack(track)
                 isFavoriteLiveData.value = true
-                Log.d("TAG123", "now isFavoriteLiveData.value = ${isFavoriteLiveData.value} ")
             } else {
-                Log.d("TAG123", " else")
                 favoriteTrackinteractor.unlikeTrack(track)
                 isFavoriteLiveData.value = false
-                Log.d("TAG123", "now isFavoriteLiveData.value = ${isFavoriteLiveData.value} ")
             }
         }
+    }
+
+    fun initLikeButton(isLiked : Boolean) {
+        isFavoriteLiveData.value = isLiked
     }
 
 }

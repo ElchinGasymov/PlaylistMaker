@@ -19,16 +19,13 @@ class FavouriteTracksViewModel(
     fun observeContentState(): LiveData<FavoritesState> = contentStateLiveData
 
     var isClickable = true
-    init {
-        getFavoritesTracks()
-    }
 
     private val trackOnClickDebounce =
         debounce<Boolean>(Constants.CLICK_DEBOUNCE_DELAY, viewModelScope, false) {
             isClickable = it
         }
 
-    private fun getFavoritesTracks() {
+    fun getFavoritesTracks() {
         viewModelScope.launch {
             favoriteTrackinteractor.getFavoritesTracks()
                 .collect { favoritesTracks ->

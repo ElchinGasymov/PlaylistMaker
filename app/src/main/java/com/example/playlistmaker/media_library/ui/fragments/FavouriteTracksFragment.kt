@@ -39,6 +39,7 @@ class FavouriteTracksFragment : Fragment() {
         }
 
         initAdapter()
+        initLikedTracksList()
     }
 
     private fun clickOnTrack(track: Track) {
@@ -69,6 +70,10 @@ class FavouriteTracksFragment : Fragment() {
                 binding.nothingToShowTV.isVisible = false
             }
         }
+    }
+
+    private fun initLikedTracksList() {
+        viewModel.getFavoritesTracks()
     }
 
     companion object {
