@@ -5,6 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface FavoriteTrackInteractor {
     suspend fun likeTrack(track: Track)
-    suspend fun unlikeTrack(track: Track)
+    suspend fun unlikeTrack(trackId: Int)
     suspend fun getFavoritesTracks(): Flow<List<Track>>
 }

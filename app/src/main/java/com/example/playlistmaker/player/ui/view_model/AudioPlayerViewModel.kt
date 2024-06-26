@@ -17,7 +17,7 @@ import java.util.Locale
 
 class AudioPlayerViewModel(
     private val playerInteractor: PlayerInteractor,
-    private val favoriteTrackinteractor: FavoriteTrackInteractor
+    private val favoriteTrackInteractor: FavoriteTrackInteractor
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<PlayerScreenState>()
@@ -95,10 +95,10 @@ class AudioPlayerViewModel(
     fun onFavoriteClicked(track: Track) {
         viewModelScope.launch {
             if (isFavoriteLiveData.value == false) {
-                favoriteTrackinteractor.likeTrack(track)
+                favoriteTrackInteractor.likeTrack(track)
                 isFavoriteLiveData.value = true
             } else {
-                favoriteTrackinteractor.unlikeTrack(track)
+                favoriteTrackInteractor.unlikeTrack(track.trackId)
                 isFavoriteLiveData.value = false
             }
         }

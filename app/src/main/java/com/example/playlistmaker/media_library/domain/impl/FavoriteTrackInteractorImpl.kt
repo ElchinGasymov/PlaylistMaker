@@ -12,8 +12,8 @@ class FavoriteTrackInteractorImpl(
         repository.likeTrack(track)
     }
 
-    override suspend fun unlikeTrack(track: Track) {
-        repository.unlikeTrack(track)
+    override suspend fun unlikeTrack(trackId: Int) {
+        repository.unlikeTrack(trackId)
     }
 
     override suspend fun getFavoritesTracks(): Flow<List<Track>> {

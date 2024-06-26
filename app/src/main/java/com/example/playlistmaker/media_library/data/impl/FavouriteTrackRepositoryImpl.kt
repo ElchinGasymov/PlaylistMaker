@@ -18,10 +18,10 @@ class FavouriteTrackRepositoryImpl(
             .addTracks(converter.map(track))
     }
 
-    override suspend fun unlikeTrack(track: Track) {
+    override suspend fun unlikeTrack(trackId: Int) {
         database
             .trackDao()
-            .deleteTrackEntity(converter.map(track))
+            .deleteTrackEntity(trackId)
     }
 
     override suspend fun getFavoritesTracks(): Flow<List<Track>> = flow {

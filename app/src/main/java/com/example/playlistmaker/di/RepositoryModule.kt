@@ -28,8 +28,6 @@ val repositoryModule = module {
         SettingsRepositoryImpl(themeStorage = get())
     }
 
-    //factory { TrackDbConvertor() }
-
     single<FavouriteTrackRepository> {
         FavouriteTrackRepositoryImpl(
             database = get(),
