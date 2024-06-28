@@ -30,6 +30,12 @@ class FavouriteTrackRepositoryImpl(
         emit(convertFromTrackEntity(tracks))
     }
 
+    override suspend fun getIsLiked(trackId: Int): Boolean {
+        val likedIds = database
+            .trackDao().getIds()
+        return likedIds.contains(trackId)
+    }
+
     private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<Track> {
         return tracks.map { track -> converter.map(track) }
     }

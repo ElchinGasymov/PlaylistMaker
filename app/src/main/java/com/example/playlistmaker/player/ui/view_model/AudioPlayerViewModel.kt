@@ -104,8 +104,14 @@ class AudioPlayerViewModel(
         }
     }
 
-    fun initLikeButton(isLiked : Boolean) {
+    fun initLikeButton(isLiked: Boolean) {
         isFavoriteLiveData.value = isLiked
+    }
+
+    fun isTrackLiked(trackId: Int) {
+        viewModelScope.launch {
+            isFavoriteLiveData.value = favoriteTrackInteractor.getIsLiked(trackId)
+        }
     }
 
 }

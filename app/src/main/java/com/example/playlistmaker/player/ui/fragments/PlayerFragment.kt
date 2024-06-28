@@ -37,6 +37,10 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val track = args.track
+
+        viewModel.isTrackLiked(track.trackId)
+
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
@@ -48,8 +52,6 @@ class PlayerFragment : Fragment() {
         binding.backBtn.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
-
-        val track = args.track
 
         showTrack(track)
 

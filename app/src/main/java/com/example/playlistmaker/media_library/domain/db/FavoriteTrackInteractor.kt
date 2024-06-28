@@ -7,4 +7,5 @@ interface FavoriteTrackInteractor {
     suspend fun likeTrack(track: Track)
     suspend fun unlikeTrack(trackId: Int)
     suspend fun getFavoritesTracks(): Flow<List<Track>>
+    suspend fun getIsLiked(trackId: Int): Boolean
 }
