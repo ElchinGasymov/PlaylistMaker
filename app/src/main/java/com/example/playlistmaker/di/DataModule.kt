@@ -64,9 +64,9 @@ val dataModule = module {
 
     single<ILocalStorage> {
         HistoryLocalStorage(
-            get(),
-            get(),
-            get()
+            preferences = get(),
+            gson = get(),
+            database = get()
         )
     }
 

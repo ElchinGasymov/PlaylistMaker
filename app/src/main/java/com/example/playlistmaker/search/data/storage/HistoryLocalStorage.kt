@@ -41,12 +41,12 @@ class HistoryLocalStorage(
             emptyList()
         }
         val favouriteIds: List<Int> = database.trackDao().getIds()
-        history.forEach { track ->
-            if (favouriteIds.contains(track.trackId)) {
-                track.isFavorite = true
-            }
+
+        val updatedHistory = history.map { track ->
+            track.copy(isFavorite = favouriteIds.contains(track.trackId))
         }
-        return history
+
+        return updatedHistory
     }
 
     private fun saveHistory(history: List<Track>) {

@@ -18,7 +18,7 @@ class TrackRepositoryImpl(
     private val historyLocalStorage: ILocalStorage,
     private val songConverter: SongConverter,
     private val database: AppDatabase
-    ) : TracksRepository {
+) : TracksRepository {
 
     override fun searchTracks(query: String): Flow<Resource<List<Track>>> = flow {
 
@@ -28,18 +28,20 @@ class TrackRepositoryImpl(
             ApiConstants.NO_INTERNET_CONNECTION_CODE -> {
                 emit(Resource.Error(ApiConstants.INTERNET_CONNECTION_ERROR))
             }
+
             ApiConstants.SUCCESS_CODE -> {
-               val tracks = (response as SongsSearchResponse).songs.map { song ->
+                val tracks = (response as SongsSearchResponse).songs.map { song ->
                     songConverter.mapToUiModels(song = song)
                 }
                 val favouriteIds = database.trackDao().getIds()
-                tracks.forEach { track ->
-                    if (favouriteIds.contains(track.trackId)) {
-                        track.isFavorite = true
-                    }
+
+                val updatedTracks = tracks.map { track ->
+                    track.copy(isFavorite = favouriteIds.contains(track.trackId))
                 }
-                emit(Resource.Success(tracks))
+
+                emit(Resource.Success(updatedTracks))
             }
+
             else -> {
                 emit(Resource.Error(ApiConstants.SERVER_ERROR))
             }
