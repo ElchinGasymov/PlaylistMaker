@@ -93,7 +93,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/playIv"
         app:layout_constraintEnd_toStartOf="@id/rightGuideline"
         app:layout_constraintTop_toTopOf="@+id/playIv"
-        app:srcCompat="@drawable/ic_like" />
+        app:srcCompat="@drawable/ic_is_not_liked" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/playIv"

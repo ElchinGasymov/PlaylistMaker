@@ -37,15 +37,21 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val track = args.track
+
+        viewModel.isTrackLiked(track.trackId)
+
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
+        }
+
+        viewModel.observeFavoriteState().observe(viewLifecycleOwner) {
+            renderLikeButton(it)
         }
 
         binding.backBtn.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
-
-        val track = args.track
 
         showTrack(track)
 
@@ -53,6 +59,12 @@ class PlayerFragment : Fragment() {
 
         binding.playIv.setOnClickListener {
             viewModel.playbackControl()
+        }
+
+        viewModel.initLikeButton(track.isFavorite)
+
+        binding.likeIv.setOnClickListener {
+            viewModel.onFavoriteClicked(track)
         }
     }
 
@@ -124,6 +136,15 @@ class PlayerFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         viewModel.pausePlayer()
+    }
+
+    private fun renderLikeButton(isFavorite: Boolean) {
+        val imageResource = if (isFavorite) {
+            R.drawable.ic_is_liked
+        } else {
+            R.drawable.ic_is_not_liked
+        }
+        binding.likeIv.setImageResource(imageResource)
     }
 
 }

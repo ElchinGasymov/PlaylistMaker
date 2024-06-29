@@ -27,7 +27,7 @@
         app:layout_constraintBottom_toTopOf="@+id/artistNameTv"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@+id/trackNameTv"
-        tools:srcCompat="@drawable/ic_like" />
+        tools:srcCompat="@drawable/ic_is_not_liked" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/trackNameTv"

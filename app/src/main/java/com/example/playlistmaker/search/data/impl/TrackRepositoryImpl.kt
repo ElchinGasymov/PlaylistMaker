@@ -1,6 +1,7 @@
 package com.example.playlistmaker.search.data.impl
 
 import com.example.playlistmaker.ApiConstants
+import com.example.playlistmaker.media_library.data.db.AppDatabase
 import com.example.playlistmaker.search.data.ILocalStorage
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.SongsSearchRequest
@@ -15,8 +16,9 @@ import kotlinx.coroutines.flow.flow
 class TrackRepositoryImpl(
     private val networkClient: NetworkClient,
     private val historyLocalStorage: ILocalStorage,
-    private val songConverter: SongConverter
-    ) : TracksRepository {
+    private val songConverter: SongConverter,
+    private val database: AppDatabase
+) : TracksRepository {
 
     override fun searchTracks(query: String): Flow<Resource<List<Track>>> = flow {
 
@@ -26,19 +28,27 @@ class TrackRepositoryImpl(
             ApiConstants.NO_INTERNET_CONNECTION_CODE -> {
                 emit(Resource.Error(ApiConstants.INTERNET_CONNECTION_ERROR))
             }
+
             ApiConstants.SUCCESS_CODE -> {
-               val tracks = (response as SongsSearchResponse).songs.map { song ->
+                val tracks = (response as SongsSearchResponse).songs.map { song ->
                     songConverter.mapToUiModels(song = song)
                 }
-                emit(Resource.Success(tracks))
+                val favouriteIds = database.trackDao().getIds()
+
+                val updatedTracks = tracks.map { track ->
+                    track.copy(isFavorite = favouriteIds.contains(track.trackId))
+                }
+
+                emit(Resource.Success(updatedTracks))
             }
+
             else -> {
                 emit(Resource.Error(ApiConstants.SERVER_ERROR))
             }
         }
     }
 
-    override fun addTrackToHistory(track: Track) {
+    override suspend fun addTrackToHistory(track: Track) {
         historyLocalStorage.addToHistory(track)
     }
 
@@ -46,7 +56,7 @@ class TrackRepositoryImpl(
         historyLocalStorage.clearHistory()
     }
 
-    override fun getHistory(): List<Track> {
+    override suspend fun getHistory(): List<Track> {
         return historyLocalStorage.getHistory()
     }
 }

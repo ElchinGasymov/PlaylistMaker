@@ -86,19 +86,15 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     }
 
     private fun addToHistory(track: Track) {
-        tracksInteractor.addTrackToHistory(track)
-
+        viewModelScope.launch {
+            tracksInteractor.addTrackToHistory(track)
+        }
     }
 
     fun clearSearch() {
         searchJob?.cancel()
         currentSearchQuery = null
-        val historyTracks = showHistory()
-        if (historyTracks.isNotEmpty()) {
-            renderState(SearchScreenState.ShowHistory(historyTracks as MutableList<Track>))
-        } else {
-            renderState(SearchScreenState.Success(arrayListOf()))
-        }
+        showHistory()
     }
 
     fun clearHistory() {
@@ -107,8 +103,15 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
 
     }
 
-    private fun showHistory(): List<Track> {
-        return tracksInteractor.getHistory()
+    private fun showHistory() {
+        viewModelScope.launch {
+            val historyTracks = tracksInteractor.getHistory()
+            if (historyTracks.isNotEmpty()) {
+                renderState(SearchScreenState.ShowHistory(historyTracks as MutableList<Track>))
+            } else {
+                renderState(SearchScreenState.Success(arrayListOf()))
+            }
+        }
     }
 
     private fun renderState(state: SearchScreenState) {

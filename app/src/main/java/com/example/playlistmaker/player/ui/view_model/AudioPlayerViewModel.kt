@@ -5,19 +5,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.Constants
+import com.example.playlistmaker.media_library.domain.db.FavoriteTrackInteractor
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.ui.PlayerScreenState
+import com.example.playlistmaker.search.domain.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AudioPlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewModel() {
+class AudioPlayerViewModel(
+    private val playerInteractor: PlayerInteractor,
+    private val favoriteTrackInteractor: FavoriteTrackInteractor
+) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<PlayerScreenState>()
-
     fun observeState(): LiveData<PlayerScreenState> = stateLiveData
+
+    private val isFavoriteLiveData = MutableLiveData<Boolean>()
+    fun observeFavoriteState(): LiveData<Boolean> = isFavoriteLiveData
 
     private var progressTimer: Job? = null
 
@@ -83,6 +90,28 @@ class AudioPlayerViewModel(private val playerInteractor: PlayerInteractor) : Vie
 
     private fun renderState(state: PlayerScreenState) {
         stateLiveData.postValue(state)
+    }
+
+    fun onFavoriteClicked(track: Track) {
+        viewModelScope.launch {
+            if (isFavoriteLiveData.value == false) {
+                favoriteTrackInteractor.likeTrack(track)
+                isFavoriteLiveData.value = true
+            } else {
+                favoriteTrackInteractor.unlikeTrack(track.trackId)
+                isFavoriteLiveData.value = false
+            }
+        }
+    }
+
+    fun initLikeButton(isLiked: Boolean) {
+        isFavoriteLiveData.value = isLiked
+    }
+
+    fun isTrackLiked(trackId: Int) {
+        viewModelScope.launch {
+            isFavoriteLiveData.value = favoriteTrackInteractor.getIsLiked(trackId)
+        }
     }
 
 }
