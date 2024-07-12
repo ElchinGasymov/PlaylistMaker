@@ -49,7 +49,7 @@ class PlayerFragment : Fragment() {
             renderLikeButton(it)
         }
 
-        binding.backBtn.setNavigationOnClickListener {
+        binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
 

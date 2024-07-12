@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_4dp"
+    android:layout_marginVertical="@dimen/_8dp"
+    android:background="?attr/colorPrimary"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/corner_radius_8"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:id="@+id/cover_playlist"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:background="?attr/colorPrimary"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_placeholder_512" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/name_playlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_4dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/ys_display_medium"
+        android:maxLines="1"
+        android:textColor="?attr/colorSecondary"
+        android:textSize="12sp"
+        tools:text="Название плейлиста" />
+
+    <TextView
+        android:id="@+id/count_tracks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_4dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/ys_display_medium"
+        android:maxLines="1"
+        android:text="@string/_0_tracks"
+        android:textColor="?attr/colorSecondary"
+        android:textSize="12sp" />
+</androidx.appcompat.widget.LinearLayoutCompat>
