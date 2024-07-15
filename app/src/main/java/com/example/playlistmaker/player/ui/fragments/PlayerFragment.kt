@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -13,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlayerBinding
+import com.example.playlistmaker.media_library.ui.bottom_sheet.PlaylistsBottomSheet
 import com.example.playlistmaker.player.ui.PlayerScreenState
 import com.example.playlistmaker.player.ui.view_model.AudioPlayerViewModel
 import com.example.playlistmaker.search.domain.Track
@@ -66,6 +69,8 @@ class PlayerFragment : Fragment() {
         binding.likeIv.setOnClickListener {
             viewModel.onFavoriteClicked(track)
         }
+
+        initAddToPlaylistButton(track)
     }
 
     private fun render(state: PlayerScreenState) {
@@ -145,6 +150,24 @@ class PlayerFragment : Fragment() {
             R.drawable.ic_is_not_liked
         }
         binding.likeIv.setImageResource(imageResource)
+    }
+
+    private fun initAddToPlaylistButton(track: Track) {
+        binding.addToPlaylist.setOnClickListener { button ->
+            (button as? ImageView)?.let { startAnimation(it) }
+            findNavController().navigate(
+                R.id.action_playerFragment_to_bottomSheet, PlaylistsBottomSheet.createArgs(track)
+            )
+        }
+    }
+
+    private fun startAnimation(button: ImageView) {
+        button.startAnimation(
+            AnimationUtils.loadAnimation(
+                requireContext(),
+                R.anim.scale
+            )
+        )
     }
 
 }

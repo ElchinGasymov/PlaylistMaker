@@ -1,5 +1,6 @@
 package com.example.playlistmaker.di
 
+import com.example.playlistmaker.media_library.ui.view_model.BottomSheetViewModel
 import com.example.playlistmaker.media_library.ui.view_model.FavouriteTracksViewModel
 import com.example.playlistmaker.media_library.ui.view_model.PlaylistsViewModel
 import com.example.playlistmaker.new_playlist.ui.view_model.NewPlaylistViewModel
@@ -30,10 +31,17 @@ val viewModelModule = module {
     }
 
     viewModel {
-        NewPlaylistViewModel(newPlaylistInteractor = get())
+        NewPlaylistViewModel(
+            newPlaylistInteractor = get(),
+            settingsInteractor = get()
+        )
     }
 
     viewModel {
         PlaylistsViewModel(playlistsInteractor = get())
+    }
+
+    viewModel {
+        BottomSheetViewModel(playlistsInteractor = get())
     }
 }

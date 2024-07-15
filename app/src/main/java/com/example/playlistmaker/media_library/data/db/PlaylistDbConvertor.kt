@@ -12,7 +12,9 @@ class PlaylistDbConvertor {
             coverImageUrl = playlist.coverImageUrl,
             playlistName = playlist.playlistName,
             playlistDescription = playlist.playlistDescription,
-            trackList = Json.decodeFromString(playlist.trackList),
+            trackList = if (playlist.trackList.isNotEmpty()) {
+                Json.decodeFromString(playlist.trackList)
+            } else listOf(),
             tracksCount = playlist.countTracks
         )
     }
@@ -23,7 +25,9 @@ class PlaylistDbConvertor {
             playlistName = playlist.playlistName,
             playlistDescription = playlist.playlistDescription,
             coverImageUrl = playlist.coverImageUrl,
-            trackList = Json.encodeToString(playlist.trackList),
+            trackList = if (playlist.trackList.isNotEmpty()) {
+                Json.encodeToString(playlist.trackList)
+            } else "",
             countTracks = playlist.tracksCount,
             saveDate = System.currentTimeMillis()
         )

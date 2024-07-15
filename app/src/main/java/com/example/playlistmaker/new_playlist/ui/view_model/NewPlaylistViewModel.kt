@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.new_playlist.domain.NewPlaylistInteractor
 import com.example.playlistmaker.new_playlist.domain.model.PermissionsResultState
 import com.example.playlistmaker.new_playlist.domain.model.Playlist
+import com.example.playlistmaker.settings.domain.SettingsInteractor
 import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.PermissionResult
 import kotlinx.coroutines.channels.BufferOverflow
@@ -17,6 +18,7 @@ import java.net.URI
 
 class NewPlaylistViewModel(
     private val newPlaylistInteractor: NewPlaylistInteractor,
+    private val settingsInteractor: SettingsInteractor
 ) : ViewModel() {
 
     private val _screenStateFlow: MutableSharedFlow<ScreenState> = MutableSharedFlow(
@@ -111,4 +113,9 @@ class NewPlaylistViewModel(
             _screenStateFlow.tryEmit(ScreenState.AllowedToGoOut)
         }
     }
+
+    fun isDarkModeOn(): Boolean {
+        return settingsInteractor.isDarkModeOn()
+    }
+
 }

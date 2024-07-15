@@ -31,7 +31,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/playlistNameContainer"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/TextInputNewPlaylist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_16dp"
@@ -47,13 +47,14 @@
             android:id="@+id/playlistNameEt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textCursorDrawable="@drawable/color_cursor" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/playlistDescriptionContainer"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/TextInputNewPlaylist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_16dp"
@@ -69,11 +70,12 @@
             android:id="@+id/playlistDescriptionEt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textCursorDrawable="@drawable/color_cursor" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/createPlaylistButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,6 +85,7 @@
         android:enabled="false"
         android:text="@string/create_playlist"
         android:textAllCaps="false"
+        android:textColor="?attr/YP_White"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

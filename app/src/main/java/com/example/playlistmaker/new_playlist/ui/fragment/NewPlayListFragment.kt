@@ -30,7 +30,6 @@ import com.example.playlistmaker.new_playlist.ui.view_model.NewPlaylistViewModel
 import com.example.playlistmaker.new_playlist.ui.view_model.ScreenState
 import com.example.playlistmaker.utils.setImage
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
@@ -219,11 +218,23 @@ class NewPlayListFragment : Fragment() {
     private fun showAndroidXSnackbar(playlistName: String) {
         val message =
             getString(R.string.playlist) + " \"" + playlistName + "\" " + getString(R.string.created)
+
+        val backgroundColor = if (viewModel.isDarkModeOn()) {
+            ContextCompat.getColor(requireContext(), R.color.YP_White)
+        } else {
+            ContextCompat.getColor(requireContext(), R.color.YP_Black)
+        }
+
+        val textColor = if (viewModel.isDarkModeOn()) {
+            ContextCompat.getColor(requireContext(), R.color.YP_Black)
+        } else {
+            ContextCompat.getColor(requireContext(), R.color.YP_White)
+        }
+
         Snackbar
-            .make(requireContext(), binding.fragmentNewPlaylist, message, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.YP_Blue))
-            .setTextColor(ContextCompat.getColor(requireContext(), R.color.YP_White))
-            .setDuration(BaseTransientBottomBar.LENGTH_SHORT)
+            .make(requireView(), message, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(backgroundColor)
+            .setTextColor(textColor)
             .show()
     }
 

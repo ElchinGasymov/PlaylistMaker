@@ -48,4 +48,5 @@
     <dimen name="_80dp">80dp</dimen>
     <dimen name="_32dp">32dp</dimen>
     <dimen name="_17dp">17dp</dimen>
+    <dimen name="_2dp">2dp</dimen>
 </resources>
