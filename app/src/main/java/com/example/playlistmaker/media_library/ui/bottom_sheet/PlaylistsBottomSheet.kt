@@ -8,11 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
-import com.example.playlistmaker.R
+import androidx.navigation.fragment.navArgs
 import com.example.playlistmaker.databinding.BottomSheetBinding
 import com.example.playlistmaker.media_library.ui.adapters.BottomSheetAdapter
 import com.example.playlistmaker.media_library.ui.view_model.BottomSheetState
@@ -22,11 +20,7 @@ import com.example.playlistmaker.search.domain.Track
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.google.android.material.R as AndroidMaterialR
 
@@ -37,7 +31,7 @@ class PlaylistsBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var playlistsAdapter: BottomSheetAdapter
     private lateinit var track: Track
-    //private val args: PlayerFragmentArgs by navArgs()
+    private val args: PlaylistsBottomSheetArgs by navArgs()
 
     override fun onStart() {
         super.onStart()
@@ -57,11 +51,7 @@ class PlaylistsBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //val track = args.track
-
-        track = requireArguments()
-            .getString(TRACK)
-            ?.let { Json.decodeFromString<Track>(it) }!!
+        track = args.track
 
         initAdapter()
         initBtnCreate()
@@ -107,26 +97,14 @@ class PlaylistsBottomSheet : BottomSheetDialogFragment() {
                 val message =
                     getString(com.example.playlistmaker.R.string.added) + " \"" + state.playlistModel.playlistName + "\" "
 
-                showMessage(message)
+                Toast
+                    .makeText(requireContext(), message, Toast.LENGTH_SHORT)
+                    .show()
                 dialog?.cancel()
             }
 
             else -> showContent(state.content)
         }
-    }
-
-    private fun showMessage(message: String) {
-        Snackbar
-            .make(
-                requireContext(),
-                requireActivity().findViewById(AndroidMaterialR.id.container),
-                message,
-                Snackbar.LENGTH_SHORT
-            )
-            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.YP_Blue))
-            .setTextColor(ContextCompat.getColor(requireContext(), R.color.YP_White))
-            .setDuration(BaseTransientBottomBar.LENGTH_LONG)
-            .show()
     }
 
     private fun showContent(content: List<Playlist>) {
@@ -164,13 +142,4 @@ class PlaylistsBottomSheet : BottomSheetDialogFragment() {
         return displayMetrics.heightPixels
     }
 
-    companion object {
-
-        fun createArgs(track: Track): Bundle = bundleOf(
-            TRACK to Json.encodeToString(track)
-        )
-
-        const val TRACK = "track"
-
-    }
 }

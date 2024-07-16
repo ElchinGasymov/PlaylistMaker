@@ -15,7 +15,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlayerBinding
-import com.example.playlistmaker.media_library.ui.bottom_sheet.PlaylistsBottomSheet
 import com.example.playlistmaker.player.ui.PlayerScreenState
 import com.example.playlistmaker.player.ui.view_model.AudioPlayerViewModel
 import com.example.playlistmaker.search.domain.Track
@@ -155,9 +154,8 @@ class PlayerFragment : Fragment() {
     private fun initAddToPlaylistButton(track: Track) {
         binding.addToPlaylist.setOnClickListener { button ->
             (button as? ImageView)?.let { startAnimation(it) }
-            findNavController().navigate(
-                R.id.action_playerFragment_to_bottomSheet, PlaylistsBottomSheet.createArgs(track)
-            )
+            val action = PlayerFragmentDirections.actionPlayerFragmentToBottomSheet(track)
+            findNavController().navigate(action)
         }
     }
 
