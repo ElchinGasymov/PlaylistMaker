@@ -14,25 +14,25 @@ class FavouriteTrackRepositoryImpl(
 ) : FavouriteTrackRepository {
     override suspend fun likeTrack(track: Track) {
         database
-            .trackDao()
+            .favouriteTrackDao()
             .addTracks(converter.map(track))
     }
 
     override suspend fun unlikeTrack(trackId: Int) {
         database
-            .trackDao()
+            .favouriteTrackDao()
             .deleteTrackEntity(trackId)
     }
 
     override suspend fun getFavoritesTracks(): Flow<List<Track>> = flow {
         val tracks = database
-            .trackDao().getTracks()
+            .favouriteTrackDao().getTracks()
         emit(convertFromTrackEntity(tracks))
     }
 
     override suspend fun getIsLiked(trackId: Int): Boolean {
         val likedIds = database
-            .trackDao().getIds()
+            .favouriteTrackDao().getIds()
         return likedIds.contains(trackId)
     }
 

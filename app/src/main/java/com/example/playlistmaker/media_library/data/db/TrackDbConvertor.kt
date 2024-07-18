@@ -10,7 +10,7 @@ class TrackDbConvertor {
             artistName = track.artistName,
             trackTime = track.trackTime,
             artworkUrl100 = track.artworkUrl100,
-            trackId = track.trackId,
+            id = track.trackId,
             collectionName = track.collectionName,
             releaseDate = track.releaseDate,
             primaryGenreName = track.primaryGenreName,
@@ -22,7 +22,7 @@ class TrackDbConvertor {
 
     fun map(track: Track): TrackEntity {
         return TrackEntity(
-            trackId = track.trackId,
+            trackId = track.id,
             trackName = track.trackName,
             artistName = track.artistName,
             trackTime = track.trackTime,

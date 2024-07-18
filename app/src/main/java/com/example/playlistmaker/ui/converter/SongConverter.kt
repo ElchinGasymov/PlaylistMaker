@@ -11,7 +11,7 @@ class SongConverter(private val convertor: DurationConverter) {
             artistName = song.artistName,
             trackTime = convertor.milsToMinSec(song.trackTimeMillis),
             artworkUrl100 = song.artworkUrl100,
-            trackId = song.trackId,
+            id = song.trackId,
             collectionName = song.collectionName?: "",
             releaseDate = song.releaseDate?: "",
             primaryGenreName = song.primaryGenreName?: "",

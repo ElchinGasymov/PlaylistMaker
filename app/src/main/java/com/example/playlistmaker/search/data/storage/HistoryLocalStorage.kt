@@ -17,7 +17,7 @@ class HistoryLocalStorage(
     override suspend fun addToHistory(track: Track) {
         val currentHistory = getHistory().toMutableList()
 
-        currentHistory.removeAll { it.trackId == track.trackId }
+        currentHistory.removeAll { it.id == track.id }
 
         currentHistory.add(0, track)
 
@@ -40,10 +40,10 @@ class HistoryLocalStorage(
         } else {
             emptyList()
         }
-        val favouriteIds: List<Int> = database.trackDao().getIds()
+        val favouriteIds: List<Int> = database.favouriteTrackDao().getIds()
 
         val updatedHistory = history.map { track ->
-            track.copy(isFavorite = favouriteIds.contains(track.trackId))
+            track.copy(isFavorite = favouriteIds.contains(track.id))
         }
 
         return updatedHistory

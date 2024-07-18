@@ -41,7 +41,7 @@ class PlayerFragment : Fragment() {
 
         val track = args.track
 
-        viewModel.isTrackLiked(track.trackId)
+        viewModel.isTrackLiked(track.id)
 
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)

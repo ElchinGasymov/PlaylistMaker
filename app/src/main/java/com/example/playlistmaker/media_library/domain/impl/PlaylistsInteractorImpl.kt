@@ -14,12 +14,13 @@ class PlaylistsInteractorImpl(
         return repository.getSavedPlaylists()
     }
 
-    override fun isTrackAlreadyExists(playlist: Playlist, track: Track) =
-        playlist.trackList.contains(track)
+    override fun isTrackAlreadyExists(playlist: Playlist, track: Track): Boolean {
+        return playlist.trackList.contains(track)
+    }
 
     override suspend fun addTrackToPlaylist(playlist: Playlist, track: Track) {
-        playlist.trackList = playlist.trackList + track
+        playlist.trackList += track
         playlist.tracksCount = playlist.trackList.size
-        repository.updateTracks(playlist)
+        repository.updateTracks(track = track, playlist = playlist)
     }
 }
