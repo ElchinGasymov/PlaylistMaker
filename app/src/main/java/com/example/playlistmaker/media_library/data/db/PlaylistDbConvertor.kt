@@ -13,7 +13,7 @@ class PlaylistDbConvertor {
             playlistName = playlist.playlistName,
             playlistDescription = playlist.playlistDescription,
             trackList = tracks.map { it.toDomain() },
-            tracksCount = playlist?.countTracks ?: 0
+            tracksCount = playlist.countTracks
         )
     }
 
@@ -21,7 +21,7 @@ class PlaylistDbConvertor {
         val gson = Gson()
         val tracks = mutableListOf<String>()
         playlist.trackList.forEach {
-            tracks.add(gson.toJson(it))
+            tracks.add(gson.toJson(it.id))
         }
 
         return PlaylistEntity(
