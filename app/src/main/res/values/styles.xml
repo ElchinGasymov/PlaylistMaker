@@ -58,4 +58,13 @@
         <item name="boxStrokeColor">@color/edittext_color</item>
         <item name="hintTextColor">@color/edittext_color</item>
     </style>
+
+    <style name="CustomAlertDialogButton.Light" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/YP_Black</item>
+    </style>
+
+    <style name="CustomAlertDialogButton.Dark" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/YP_White</item>
+    </style>
+
 </resources>

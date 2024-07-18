@@ -2,7 +2,7 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/_4dp"
     android:layout_marginVertical="@dimen/_8dp"
@@ -10,17 +10,17 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_200dp"
+        android:layout_height="@dimen/_200dp"
         app:cardCornerRadius="@dimen/corner_radius_8"
         app:cardElevation="0dp">
 
         <ImageView
             android:id="@+id/cover_playlist"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_200dp"
+            android:layout_height="@dimen/_200dp"
             android:background="?attr/colorPrimary"
-            android:scaleType="centerInside"
+            android:scaleType="center"
             android:src="@drawable/ic_placeholder_512" />
     </androidx.cardview.widget.CardView>
 

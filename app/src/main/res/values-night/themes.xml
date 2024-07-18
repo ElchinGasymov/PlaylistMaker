@@ -21,4 +21,12 @@
         <item name="YP_Red">@color/YP_Red</item>
         <item name="YP_Blue_Light">@color/YP_Blue_Light</item>
     </style>
+
+    <style name="CustomAlertDialogTheme.Dark" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/YP_Black</item>
+        <item name="colorOnSurface">@color/YP_White</item>
+        <item name="buttonBarPositiveButtonStyle">@style/CustomAlertDialogButton.Dark</item>
+        <item name="buttonBarNeutralButtonStyle">@style/CustomAlertDialogButton.Dark</item>
+    </style>
+
 </resources>

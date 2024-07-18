@@ -174,9 +174,7 @@ class NewPlayListFragment : Fragment() {
             ContextCompat
                 .getColorStateList(requireContext(), R.color.edittext_blue)
                 ?.let { view.setBoxStrokeColorStateList(it) }
-        }
-
-        else {
+        } else {
             view.defaultHintTextColor = ContextCompat.getColorStateList(
                 requireContext(),
                 R.color.edittext_color
@@ -188,7 +186,13 @@ class NewPlayListFragment : Fragment() {
     }
 
     private fun showDialog() {
-        MaterialAlertDialogBuilder(requireContext())
+        val theme = if (viewModel.isDarkModeOn()) {
+            R.style.CustomAlertDialogTheme_Dark
+        } else {
+            R.style.CustomAlertDialogTheme_Light
+        }
+
+        MaterialAlertDialogBuilder(requireContext(), theme)
             .setTitle(getString(R.string.title_playlist_dialog))
             .setMessage(getString(R.string.message_playlist_dialog))
             .setNeutralButton(getString(R.string.cancel)) { _, _ -> }

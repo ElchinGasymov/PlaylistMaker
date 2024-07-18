@@ -50,4 +50,5 @@
     <dimen name="_17dp">17dp</dimen>
     <dimen name="_2dp">2dp</dimen>
     <dimen name="_150dp">150dp</dimen>
+    <dimen name="_200dp">200dp</dimen>
 </resources>
