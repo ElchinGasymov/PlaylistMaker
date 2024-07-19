@@ -20,6 +20,7 @@
         app:navGraph="@navigation/main_navigation_graph" />
 
     <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:dividerColor="?attr/colorSecondary"
