@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -39,7 +41,7 @@ class PlayerFragment : Fragment() {
 
         val track = args.track
 
-        viewModel.isTrackLiked(track.trackId)
+        viewModel.isTrackLiked(track.id)
 
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
@@ -49,7 +51,7 @@ class PlayerFragment : Fragment() {
             renderLikeButton(it)
         }
 
-        binding.backBtn.setNavigationOnClickListener {
+        binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
 
@@ -66,6 +68,8 @@ class PlayerFragment : Fragment() {
         binding.likeIv.setOnClickListener {
             viewModel.onFavoriteClicked(track)
         }
+
+        initAddToPlaylistButton(track)
     }
 
     private fun render(state: PlayerScreenState) {
@@ -145,6 +149,23 @@ class PlayerFragment : Fragment() {
             R.drawable.ic_is_not_liked
         }
         binding.likeIv.setImageResource(imageResource)
+    }
+
+    private fun initAddToPlaylistButton(track: Track) {
+        binding.addToPlaylist.setOnClickListener { button ->
+            (button as? ImageView)?.let { startAnimation(it) }
+            val action = PlayerFragmentDirections.actionPlayerFragmentToBottomSheet(track)
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun startAnimation(button: ImageView) {
+        button.startAnimation(
+            AnimationUtils.loadAnimation(
+                requireContext(),
+                R.anim.scale
+            )
+        )
     }
 
 }

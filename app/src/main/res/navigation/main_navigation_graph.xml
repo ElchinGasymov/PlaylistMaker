@@ -18,6 +18,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
+
     <fragment
         android:id="@+id/libraryFragment"
         android:name="com.example.playlistmaker.media_library.ui.fragments.LibraryFragment"
@@ -30,22 +31,56 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_libraryFragment_to_newPlayListFragment"
+            app:destination="@id/newPlayListFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.playlistmaker.settings.ui.fragments.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+
     <fragment
         android:id="@+id/playerFragment"
         android:name="com.example.playlistmaker.player.ui.fragments.PlayerFragment"
-        android:label="PlayerFragment">
+        android:label="PlayerFragment"
+        tools:layout="@layout/fragment_player">
         <argument
             android:name="track"
             app:argType="com.example.playlistmaker.search.domain.Track" />
         <action
             android:id="@+id/action_playerFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_playerFragment_to_bottomSheet"
+            app:destination="@id/bottomSheet" />
     </fragment>
+
+    <fragment
+        android:id="@+id/newPlayListFragment"
+        android:name="com.example.playlistmaker.new_playlist.ui.fragment.NewPlayListFragment"
+        android:label="NewPlayListFragment"
+        tools:layout="@layout/fragment_new_playlist" />
+    <dialog
+        android:id="@+id/bottomSheet"
+        android:name="com.example.playlistmaker.media_library.ui.bottom_sheet.PlaylistsBottomSheet"
+        android:label="BottomSheet">
+        <argument
+            android:name="track"
+            app:argType="com.example.playlistmaker.search.domain.Track" />
+        <action
+            android:id="@+id/action_bottomSheet_to_newPlaylist"
+            app:destination="@id/newPlayListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </dialog>
+    <action
+        android:id="@+id/action_newPlayListFragment_to_libraryFragment"
+        app:destination="@id/libraryFragment" />
+
 
 </navigation>

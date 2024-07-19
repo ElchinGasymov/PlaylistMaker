@@ -7,6 +7,7 @@ import androidx.room.Room
 import com.example.playlistmaker.ApiConstants
 import com.example.playlistmaker.Constants
 import com.example.playlistmaker.media_library.data.db.AppDatabase
+import com.example.playlistmaker.media_library.data.db.PlaylistDbConvertor
 import com.example.playlistmaker.media_library.data.db.TrackDbConvertor
 import com.example.playlistmaker.search.data.ILocalStorage
 import com.example.playlistmaker.search.data.NetworkClient
@@ -98,4 +99,6 @@ val dataModule = module {
     }
 
     factory<TrackDbConvertor> { TrackDbConvertor() }
+
+    factory<PlaylistDbConvertor> { PlaylistDbConvertor() }
 }

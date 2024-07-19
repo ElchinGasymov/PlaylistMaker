@@ -1,7 +1,11 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.media_library.domain.db.FavoriteTrackInteractor
+import com.example.playlistmaker.media_library.domain.db.PlaylistsInteractor
 import com.example.playlistmaker.media_library.domain.impl.FavoriteTrackInteractorImpl
+import com.example.playlistmaker.media_library.domain.impl.PlaylistsInteractorImpl
+import com.example.playlistmaker.new_playlist.domain.NewPlaylistInteractor
+import com.example.playlistmaker.new_playlist.domain.impl.NewPlaylistInteractorImpl
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.domain.impl.PlayerInteractorImpl
 import com.example.playlistmaker.search.domain.TracksInteractor
@@ -25,5 +29,13 @@ val interactorModule = module {
 
     factory<FavoriteTrackInteractor> {
         FavoriteTrackInteractorImpl(repository = get())
+    }
+
+    factory<NewPlaylistInteractor> {
+        NewPlaylistInteractorImpl(repository = get())
+    }
+
+    factory<PlaylistsInteractor> {
+        PlaylistsInteractorImpl(repository = get())
     }
 }

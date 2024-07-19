@@ -26,12 +26,14 @@ class RootActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.playerFragment -> {
+                R.id.playerFragment, R.id.newPlayListFragment -> {
                     binding.bottomNavigationView.isVisible = false
+                    binding.divider.isVisible = false
                 }
 
                 else -> {
                     binding.bottomNavigationView.isVisible = true
+                    binding.divider.isVisible = true
                 }
             }
         }

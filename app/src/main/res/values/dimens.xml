@@ -45,4 +45,10 @@
     <dimen name="_46dp">46dp</dimen>
     <dimen name="dividerThickness">0.5dp</dimen>
     <dimen name="_60dp">60dp</dimen>
+    <dimen name="_80dp">80dp</dimen>
+    <dimen name="_32dp">32dp</dimen>
+    <dimen name="_17dp">17dp</dimen>
+    <dimen name="_2dp">2dp</dimen>
+    <dimen name="_150dp">150dp</dimen>
+    <dimen name="_200dp">200dp</dimen>
 </resources>

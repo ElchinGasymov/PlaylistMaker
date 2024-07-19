@@ -1,5 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">?YP_White</item>
@@ -21,6 +20,13 @@
         <item name="YP_Background">@color/YP_Background</item>
         <item name="YP_Red">@color/YP_Red</item>
         <item name="YP_Blue_Light">@color/YP_Blue_Light</item>
+    </style>
+
+    <style name="CustomAlertDialogTheme.Light" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/YP_White</item>
+        <item name="colorOnSurface">@color/YP_Black</item>
+        <item name="buttonBarPositiveButtonStyle">@style/CustomAlertDialogButton.Light</item>
+        <item name="buttonBarNeutralButtonStyle">@style/CustomAlertDialogButton.Light</item>
     </style>
 
 </resources>

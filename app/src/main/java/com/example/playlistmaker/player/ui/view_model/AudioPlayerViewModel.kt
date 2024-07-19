@@ -98,7 +98,7 @@ class AudioPlayerViewModel(
                 favoriteTrackInteractor.likeTrack(track)
                 isFavoriteLiveData.value = true
             } else {
-                favoriteTrackInteractor.unlikeTrack(track.trackId)
+                favoriteTrackInteractor.unlikeTrack(track.id)
                 isFavoriteLiveData.value = false
             }
         }

@@ -33,10 +33,10 @@ class TrackRepositoryImpl(
                 val tracks = (response as SongsSearchResponse).songs.map { song ->
                     songConverter.mapToUiModels(song = song)
                 }
-                val favouriteIds = database.trackDao().getIds()
+                val favouriteIds = database.favouriteTrackDao().getIds()
 
                 val updatedTracks = tracks.map { track ->
-                    track.copy(isFavorite = favouriteIds.contains(track.trackId))
+                    track.copy(isFavorite = favouriteIds.contains(track.id))
                 }
 
                 emit(Resource.Success(updatedTracks))
