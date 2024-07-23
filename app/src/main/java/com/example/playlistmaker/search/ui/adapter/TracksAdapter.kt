@@ -7,7 +7,8 @@ import com.example.playlistmaker.databinding.TrackViewBinding
 import com.example.playlistmaker.search.domain.Track
 
 class TracksAdapter(
-    private val clickListener: (Track) -> Unit
+    private val clickListener: (Track) -> Unit,
+    private val onLongClick: ((Track) -> Unit)? = null
 ) : RecyclerView.Adapter<TracksViewHolder>() {
 
     var tracks: List<Track> = mutableListOf()
@@ -18,7 +19,7 @@ class TracksAdapter(
     }
 
     override fun onBindViewHolder(holder: TracksViewHolder, position: Int) {
-        holder.bind(tracks[position])
+        holder.bind(model = tracks[position], onLongClick = onLongClick)
     }
 
     override fun getItemCount(): Int {

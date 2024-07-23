@@ -27,13 +27,13 @@ class SearchFragment : Fragment() {
     private val binding: FragmentSearchBinding by viewBinding(CreateMethod.INFLATE)
     private val viewModel by viewModel<SearchViewModel>()
 
-    private val searchAdapter = TracksAdapter {
-        clickOnTrack(it)
-    }
+    private val searchAdapter = TracksAdapter(
+        clickListener = { clickOnTrack(it) }
+    )
 
-    private val historyAdapter = TracksAdapter {
-        clickOnTrack(it)
-    }
+    private val historyAdapter = TracksAdapter(
+        clickListener = { clickOnTrack(it) }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,13 +69,16 @@ class SearchFragment : Fragment() {
                 searchAdapter.tracks = state.tracks
                 showContent(Content.SEARCH_RESULT)
             }
+
             is SearchScreenState.ShowHistory -> {
                 historyAdapter.tracks = state.tracks
                 showContent(Content.TRACKS_HISTORY)
             }
+
             is SearchScreenState.Error -> {
                 showContent(Content.ERROR)
             }
+
             is SearchScreenState.NothingFound -> showContent(Content.NOT_FOUND)
             is SearchScreenState.Loading -> showContent(Content.LOADING)
 
@@ -122,7 +125,8 @@ class SearchFragment : Fragment() {
         binding.searchSongEt.setText("")
         val view = activity?.currentFocus
         if (view != null) {
-            val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            val imm =
+                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.hideSoftInputFromWindow(view.windowToken, 0)
         }
         viewModel.clearSearch()

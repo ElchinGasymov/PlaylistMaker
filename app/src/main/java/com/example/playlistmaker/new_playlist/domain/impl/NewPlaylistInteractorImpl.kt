@@ -10,4 +10,8 @@ class NewPlaylistInteractorImpl(
     override suspend fun createPlaylist(playlist: Playlist) {
         repository.createPlaylist(playlist)
     }
+
+    override suspend fun updatePlaylist(playlist: Playlist) {
+        repository.updatePlaylist(playlist)
+    }
 }

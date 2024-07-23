@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llBottomSheetMenu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="56dp"
+    android:background="@drawable/bottom_sheet"
+    android:orientation="vertical"
+    android:visibility="visible"
+    app:layout_constraintBottom_toBottomOf="parent">
+
+    <View
+        android:layout_width="50dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_8dp"
+        android:background="@drawable/rounder" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_8dp" />
+
+    <include
+        android:id="@+id/playlistPreview"
+        layout="@layout/item_playlist_preview" />
+
+    <TextView
+        android:id="@+id/tvSharePlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8dp"
+        android:paddingVertical="21dp"
+        android:paddingStart="@dimen/_16dp"
+        android:singleLine="true"
+        android:text="Поделиться"
+        android:textColor="?attr/colorSecondary"
+        android:textSize="16sp"
+        app:fontFamily="@font/ys_display_regular" />
+
+    <TextView
+        android:id="@+id/tvEditPlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8dp"
+        android:paddingVertical="21dp"
+        android:paddingStart="@dimen/_16dp"
+        android:singleLine="true"
+        android:text="Редактировать информацию"
+        android:textColor="?attr/colorSecondary"
+        android:textSize="16sp"
+        app:fontFamily="@font/ys_display_regular" />
+
+
+    <TextView
+        android:id="@+id/tvDeletePlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8dp"
+        android:paddingVertical="21dp"
+        android:paddingStart="@dimen/_16dp"
+        android:singleLine="true"
+        android:text="Удалить плейлист"
+        android:textColor="?attr/colorSecondary"
+        android:textSize="16sp"
+        app:fontFamily="@font/ys_display_regular" />
+
+</LinearLayout>
