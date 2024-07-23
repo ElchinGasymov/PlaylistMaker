@@ -34,9 +34,40 @@ class PlaylistsRepositoryImpl(
             .trackDao()
             .addTrack(TrackInPlaylistEntity.fromDomain(track))
 
+        updatePlaylist(playlist)
+    }
+
+    override suspend fun updatePlaylist(playlist: Playlist) {
         database
             .playlistDao()
             .updatePlaylist(converter.map(playlist))
+    }
+
+    override suspend fun getPlaylistById(id: Int): Flow<Playlist> {
+        return database
+            .playlistDao()
+            .getPlaylistById(id)
+            .map { mapPlaylistToDomain(it) }
+    }
+
+    override suspend fun deleteTrackIfItNowhereElse(trackId: Int) {
+        val playlists = convertFromTrackEntity(
+            database
+                .playlistDao()
+                .getAllPlaylists()
+        )
+
+        var isNeedToDelete = true
+        playlists.forEach { playlist ->
+            if (playlist.trackList.any { it.id == trackId }) {
+                isNeedToDelete = false
+            }
+        }
+        if (isNeedToDelete) {
+            database
+                .trackDao()
+                .getTrack(trackId)
+        }
     }
 
     override fun getSavedPlaylists(): Flow<List<Playlist>> {
@@ -47,35 +78,27 @@ class PlaylistsRepositoryImpl(
     }
 
     private suspend fun convertFromTrackEntity(playlists: List<PlaylistEntity>): List<Playlist> {
-        //Эта штука гоняет строку в Json или наоборот
-        val gson = Gson()
-
-        //Возвращаем список плейлистов, предварительно преобразовав
         return playlists.map { playlistEntity ->
+            mapPlaylistToDomain(playlistEntity)
+        }
+    }
 
-            //список в который мы положим треки из бд
-            val tracksEntity = mutableListOf<TrackInPlaylistEntity>()
-
-            //здесь из json получаем список айдишников List<String>
-            val tracksId = gson.fromJson<List<String>>(
+    private suspend fun mapPlaylistToDomain(playlistEntity: PlaylistEntity?): Playlist {
+        val gson = Gson()
+        val tracksEntity = mutableListOf<TrackInPlaylistEntity>()
+        val tracksId = if (playlistEntity?.trackList?.isNotEmpty() == true) {
+            gson.fromJson<List<String>>(
                 playlistEntity.trackList,
                 object : TypeToken<List<String>>() {}.type
             )
+        } else listOf()
 
-            //Проходимся по списку айдишников
-            tracksId?.forEach { trackId ->
-
-                //Сходили в БД и получили по trackId конкретный трек(TrackInPlaylistEntity)
-                val trackFromBd = database
-                    .trackDao()
-                    .getTrack(trackId.toInt())
-
-                //добавлем полученный трек в общий список
-                tracksEntity.add(trackFromBd)
-            }
-
-
-            converter.map(playlistEntity, tracksEntity)
+        tracksId?.forEach { trackId ->
+            val trackFromBd = database
+                .trackDao()
+                .getTrack(trackId.toInt())
+            tracksEntity.add(trackFromBd)
         }
+        return converter.map(playlistEntity, tracksEntity)
     }
 }

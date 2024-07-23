@@ -6,14 +6,14 @@ import com.example.playlistmaker.new_playlist.domain.model.Playlist
 import com.google.gson.Gson
 
 class PlaylistDbConvertor {
-    fun map(playlist: PlaylistEntity, tracks: List<TrackInPlaylistEntity>): Playlist {
+    fun map(playlist: PlaylistEntity?, tracks: List<TrackInPlaylistEntity>): Playlist {
         return Playlist(
-            id = playlist.playlistId,
-            coverImageUrl = playlist.coverImageUrl,
-            playlistName = playlist.playlistName,
-            playlistDescription = playlist.playlistDescription,
+            id = playlist?.playlistId ?: 0,
+            coverImageUrl = playlist?.coverImageUrl ?: "",
+            playlistName = playlist?.playlistName ?: "",
+            playlistDescription = playlist?.playlistDescription ?: "",
             trackList = tracks.map { it.toDomain() },
-            tracksCount = playlist.countTracks
+            tracksCount = playlist?.countTracks ?: 0
         )
     }
 

@@ -58,4 +58,11 @@
     <string name="_0_tracks">0 треков</string>
     <string name="add_to_playlist">Добавить в плейлист</string>
 
+    <string name="playlist_count_and_duration">%s \u2022 %s</string>
+    <string name="playlist_delete_track_title">Хотите удалить трек?</string>
+    <string name="playlist_delete_title">Хотите удалить плейлист?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+
+
 </resources>

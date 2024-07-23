@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -23,8 +22,8 @@ class PlaylistsFragment : Fragment() {
 
     private val binding: FragmentPlaylistsBinding by viewBinding(CreateMethod.INFLATE)
     private val viewModel by viewModel<PlaylistsViewModel>()
-    private val playlistsAdapter = PlaylistsAdapter {
-        clickOnPlaylist()
+    private val playlistsAdapter = PlaylistsAdapter { playlist ->
+        clickOnPlaylist(playlist)
     }
 
     override fun onCreateView(
@@ -85,15 +84,16 @@ class PlaylistsFragment : Fragment() {
 
     private fun initAdapter() {
         binding.PlaylistRv.adapter = playlistsAdapter
-        //binding.PlaylistRv.addItemDecoration(PlaylistsOffsetItemDecoration(requireContext()))
     }
 
-    private fun clickOnPlaylist() {
-        if (!viewModel.isClickable) return
+    private fun clickOnPlaylist(playlist : Playlist) {
         viewModel.onPlaylistClick()
-        Toast
-            .makeText(requireContext(), "Clicked", Toast.LENGTH_SHORT)
-            .show()
+        navigateToPlayerFragment(playlist)
+    }
+
+    private fun navigateToPlayerFragment(playlist : Playlist) {
+        val action = LibraryFragmentDirections.actionLibraryFragmentToPlaylistFragment(playlist)
+        findNavController().navigate(action)
     }
 
     companion object {

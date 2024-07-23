@@ -8,4 +8,7 @@ interface PlaylistsInteractor {
     fun getPlaylists(): Flow<List<Playlist>>
     fun isTrackAlreadyExists(playlist: Playlist, track: Track): Boolean
     suspend fun addTrackToPlaylist(playlist: Playlist, track: Track)
+    suspend fun deleteTrack(trackId: Int, playlist: Playlist)
+    suspend fun deletePlaylist(playlist: Playlist)
+    suspend fun getPlaylistById(id: Int): Flow<Playlist>
 }

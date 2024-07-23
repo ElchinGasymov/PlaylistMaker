@@ -101,6 +101,18 @@ class NewPlaylistViewModel(
         }
     }
 
+    fun updatePlaylist(playlist: Playlist){
+        viewModelScope.launch {
+            newPlaylistInteractor.updatePlaylist(
+                playlist.copy(
+                    coverImageUrl = coverImageUrl,
+                    playlistName = playlistName,
+                    playlistDescription = playlistDescription
+                )
+            )
+        }
+    }
+
     fun saveImageUri(uri: URI) {
         coverImageUrl = uri.toString()
     }

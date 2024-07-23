@@ -20,9 +20,10 @@ class FavouriteTracksFragment : Fragment() {
 
     private val binding: FragmentFavouriteTracksBinding by viewBinding(CreateMethod.INFLATE)
     private val viewModel by viewModel<FavouriteTracksViewModel>()
-    private val tracksAdapter = TracksAdapter {
-        clickOnTrack(it)
-    }
+    private val tracksAdapter = TracksAdapter(
+        clickListener = { clickOnTrack(it) }
+    )
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

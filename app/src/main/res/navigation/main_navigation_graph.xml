@@ -34,6 +34,10 @@
         <action
             android:id="@+id/action_libraryFragment_to_newPlayListFragment"
             app:destination="@id/newPlayListFragment" />
+
+        <action
+            android:id="@+id/action_libraryFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment" />
     </fragment>
 
     <fragment
@@ -62,7 +66,18 @@
         android:id="@+id/newPlayListFragment"
         android:name="com.example.playlistmaker.new_playlist.ui.fragment.NewPlayListFragment"
         android:label="NewPlayListFragment"
-        tools:layout="@layout/fragment_new_playlist" />
+        tools:layout="@layout/fragment_new_playlist" >
+        <argument
+            android:name="playlist"
+            app:argType="com.example.playlistmaker.new_playlist.domain.model.Playlist"
+            android:defaultValue="@null"
+            app:nullable="true"/>
+        <argument
+            android:name="mode"
+            app:argType="com.example.playlistmaker.new_playlist.domain.PlaylistCreationMode"
+            android:defaultValue="CREATE"/>
+
+    </fragment>
     <dialog
         android:id="@+id/bottomSheet"
         android:name="com.example.playlistmaker.media_library.ui.bottom_sheet.PlaylistsBottomSheet"
@@ -81,6 +96,33 @@
     <action
         android:id="@+id/action_newPlayListFragment_to_libraryFragment"
         app:destination="@id/libraryFragment" />
+
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="com.example.playlistmaker.playlist.presentation.PlaylistFragment"
+        android:label="PlaylistFragment">
+        <argument
+            android:name="playlist"
+            app:argType="com.example.playlistmaker.new_playlist.domain.model.Playlist" />
+        <action
+            android:id="@+id/action_playlistFragment_to_playlistMenuFragment"
+            app:destination="@id/playlistMenuFragment" />
+        <action
+            android:id="@+id/action_playlistFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/playlistMenuFragment"
+        android:name="com.example.playlistmaker.playlist.presentation.menu.PlaylistMenuFragment"
+        android:label="PlaylistMenuFragment" >
+        <argument
+            android:name="playlist"
+            app:argType="com.example.playlistmaker.new_playlist.domain.model.Playlist" />
+        <action
+            android:id="@+id/action_playlistMenuFragment_to_newPlayListFragment"
+            app:destination="@id/newPlayListFragment"/>
+    </dialog>
 
 
 </navigation>

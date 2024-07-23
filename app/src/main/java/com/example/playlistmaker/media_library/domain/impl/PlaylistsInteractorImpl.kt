@@ -23,4 +23,22 @@ class PlaylistsInteractorImpl(
         playlist.tracksCount = playlist.trackList.size
         repository.updateTracks(track = track, playlist = playlist)
     }
+
+    override suspend fun deleteTrack(trackId: Int, playlist: Playlist) {
+        val newTrackList =
+            playlist.trackList.toMutableList().apply { removeIf { it.id == trackId } }
+        playlist.trackList = newTrackList
+        playlist.tracksCount = playlist.trackList.size
+        repository.updatePlaylist(playlist)
+        repository.deleteTrackIfItNowhereElse(trackId)
+    }
+
+
+    override suspend fun deletePlaylist(playlist: Playlist) {
+        repository.deletePlaylist(playlist)
+    }
+
+    override suspend fun getPlaylistById(id: Int): Flow<Playlist> {
+        return repository.getPlaylistById(id)
+    }
 }

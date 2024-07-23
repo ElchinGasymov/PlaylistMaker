@@ -20,10 +20,12 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
+import com.example.playlistmaker.new_playlist.domain.PlaylistCreationMode
 import com.example.playlistmaker.new_playlist.domain.model.PermissionsResultState
 import com.example.playlistmaker.new_playlist.ui.view_model.BtnCreateState
 import com.example.playlistmaker.new_playlist.ui.view_model.NewPlaylistViewModel
@@ -38,11 +40,11 @@ import java.io.File
 import java.io.FileOutputStream
 
 class NewPlayListFragment : Fragment() {
-
     private val binding: FragmentNewPlaylistBinding by viewBinding(CreateMethod.INFLATE)
     private val viewModel by viewModel<NewPlaylistViewModel>()
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
-
+    private val args: NewPlayListFragmentArgs by navArgs()
+    private var creationMode: PlaylistCreationMode? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,13 +55,11 @@ class NewPlayListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        creationMode = args.mode
 
         initPickMediaRegister()
-
         initObserver()
-
         initListeners()
-
     }
 
     private fun initPickMediaRegister() {
@@ -125,7 +125,7 @@ class NewPlayListFragment : Fragment() {
                 }
             })
 
-        binding.apply {
+        with(binding) {
 
             toolbar.setNavigationOnClickListener {
                 viewModel.onBackPressed()
@@ -148,9 +148,21 @@ class NewPlayListFragment : Fragment() {
             }
 
             createPlaylistButton.setOnClickListener {
-                viewModel.onCreateBtnClicked()
-                showAndroidXSnackbar(playlistNameEt.text.toString())
+                if (creationMode == PlaylistCreationMode.EDIT) {
+                    args.playlist?.let { playlist -> viewModel.updatePlaylist(playlist) }
+                    findNavController().popBackStack()
+                } else {
+                    viewModel.onCreateBtnClicked()
+                    showAndroidXSnackbar(playlistNameEt.text.toString())
+                }
             }
+
+            if (creationMode == PlaylistCreationMode.EDIT) {
+                binding.createPlaylistButton.text = "Сохранить"
+                binding.playlistNameEt.setText(args.playlist?.playlistName)
+                binding.playlistDescriptionEt.setText(args.playlist?.playlistDescription)
+            }
+
         }
     }
 

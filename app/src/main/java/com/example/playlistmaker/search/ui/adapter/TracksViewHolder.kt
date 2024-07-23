@@ -12,9 +12,13 @@ class TracksViewHolder(
     private val clickListener: (Track) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(model: Track) {
+    fun bind(
+        model: Track,
+        onLongClick: ((Track) -> Unit)?
+    ) {
 
-        val roundedCornersRadius = itemView.context.resources.getInteger(R.integer.glide_corner_radius_search)
+        val roundedCornersRadius =
+            itemView.context.resources.getInteger(R.integer.glide_corner_radius_search)
 
         binding.trackNameTv.text = model.trackName
         binding.artistNameTv.text = model.artistName
@@ -27,6 +31,11 @@ class TracksViewHolder(
             .into(binding.trackIv)
 
         itemView.setOnClickListener { clickListener(model) }
+
+        itemView.setOnLongClickListener {
+            onLongClick?.invoke(model)
+            true
+        }
     }
 
 }
